@@ -1,0 +1,34 @@
+{
+  "name": "react-native-redux-kit",
+  "title": "React Native Redux Kit",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "src/index.js",
+  "typings": "typings/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/react-native-x/redux-kit.git",
+    "baseUrl": "https://gitlab.com/react-native-x/redux-kit.git"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "Karona Tourn",
+    "email": "tournkarona@gmail.com"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "^16.8.1",
+    "react-native": ">=0.60.0-rc.0 <1.0.x"
+  },
+  "devDependencies": {
+    "react": "^16.9.0",
+    "react-native": "^0.61.5"
+  }
+}
