@@ -1,7 +1,7 @@
 {
-  "name": "react-native-redux-kit",
-  "title": "React Native Redux Kit",
-  "version": "1.0.0",
+  "name": "redux-kit",
+  "title": "Redux Kit",
+  "version": "0.1.0",
   "description": "TODO",
   "main": "src/index.js",
   "typings": "typings/index.d.ts",
@@ -10,11 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/react-native-x/redux-kit.git",
-    "baseUrl": "https://gitlab.com/react-native-x/redux-kit.git"
+    "url": "git+https://github.com/Karona-Tourn/redux-kit.git",
+    "baseUrl": "https://github.com/Karona-Tourn/redux-kit.git"
   },
   "keywords": [
-    "react-native"
+    "redux-kit",
+    "redux",
+    "react-native-redux-kit",
+    "rn-redux-kit"
   ],
   "author": {
     "name": "Karona Tourn",
@@ -23,12 +26,20 @@
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
+  "dependencies": {
+    "immer": "^6.0.5",
+    "qs": "^6.9.4"
+  },
   "peerDependencies": {
     "react": "^16.8.1",
-    "react-native": ">=0.60.0-rc.0 <1.0.x"
+    "react-native": ">=0.60.0-rc.0 <1.0.x",
+    "redux-saga": ">=1.1.3"
   },
   "devDependencies": {
     "react": "^16.9.0",
-    "react-native": "^0.61.5"
+    "react-native": "^0.61.5",
+    "react-redux": "7.2.0",
+    "redux": "4.0.5",
+    "redux-persist-transform-immutable": "5.0.0"
   }
 }
