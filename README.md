@@ -8,14 +8,10 @@ Support working with Redux
 npm install @karonatourn/redux-kit
 ```
 
-## Usage
+or
 
-```js
-import ReduxKit from "redux-kit";
-
-// ...
-
-const result = await ReduxKit.multiply(3, 7);
+```sh
+yarn add @karonatourn/redux-kit
 ```
 
 ## Contributing
