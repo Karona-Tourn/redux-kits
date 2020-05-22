@@ -1,17 +1,27 @@
-# react-native-redux-kit
+# redux-kit
 
-## Getting started
+Support working with Redux
 
-`$ npm install react-native-redux-kit --save`
+## Installation
 
-### Mostly automatic installation
-
-`$ react-native link react-native-redux-kit`
+```sh
+npm install redux-kit
+```
 
 ## Usage
-```javascript
-import ReduxKit from 'react-native-redux-kit';
 
-// TODO: What to do with the module?
-ReduxKit;
+```js
+import ReduxKit from "redux-kit";
+
+// ...
+
+const result = await ReduxKit.multiply(3, 7);
 ```
+
+## Contributing
+
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+## License
+
+MIT
