@@ -5,7 +5,7 @@ Support working with Redux
 ## Installation
 
 ```sh
-npm install redux-kit
+npm install @karonatourn/redux-kit
 ```
 
 ## Usage

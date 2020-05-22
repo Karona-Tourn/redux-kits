@@ -1,5 +1,5 @@
 {
-  "name": "redux-kit",
+  "name": "@karonatourn/redux-kit",
   "version": "0.1.0",
   "description": "Support working with Redux",
   "main": "lib/commonjs/index.js",
@@ -26,9 +26,8 @@
     "bootstrap": "yarn example && yarn && yarn pods"
   },
   "keywords": [
-    "react-native",
-    "ios",
-    "android"
+    "redux-kit",
+    "react-native-redux-kit"
   ],
   "repository": "https://github.com/Karona-Tourn/redux-kit",
   "author": "Karona Tourn <tournkarona@gmail.com> (https://github.com/Karona-Tourn)",

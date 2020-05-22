@@ -26,12 +26,16 @@ type ApiRequest = () => Promise<any>;
 
 export interface RunApiConfig {
   getApi: ((state: any, action: any) => ApiRequest[]) | null;
-  statuses: ApiStatus | null;
+  statuses?: ApiStatus | null;
   mapResultToPayload?:
     | ((state: any, action: any, results: any[] | any) => object)
     | null;
   mapActionToPendingPayload?: ((state: any, action: any) => object) | null;
-  resetIfCanceled: boolean;
+  resetIfCanceled?: boolean;
+}
+
+export interface ApiConfig extends RunApiConfig {
+  actionPrefix: string;
 }
 
 type HttpPayload = {
@@ -239,10 +243,6 @@ export function* runApi(config: RunApiConfig, rootAction: AsyncAction) {
       yield call(_failExecutingGenerator, config, action);
     }
   }
-}
-
-export interface ApiConfig extends RunApiConfig {
-  actionPrefix: string;
 }
 
 export function createAsyncApiWatcher(

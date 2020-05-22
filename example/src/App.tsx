@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-// import { actionTypeMaker, createAsyncReducer } from 'redux-kit';
+import { useDispatch } from 'react-redux';
+import { fetchUsers } from './action';
 
 export default function App() {
   const [result] = React.useState<number | undefined>();
 
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
-    // ReduxKit.multiply(3, 7).then(setResult);
+    dispatch(fetchUsers());
   }, []);
 
   return (
