@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { createAsyncReducer } from 'redux-kit';
+import { createAsyncReducer } from '@karonatourn/redux-kit';
 import actionType from './actionType';
 
 const users = createAsyncReducer(actionType.FETCH_USERS);

@@ -3,18 +3,37 @@ import { actionTypeMaker } from './actionKits';
 
 /**
  * Redux action
+ * 
+ * @ignore
  */
 export interface AsyncAction {
+  /**
+   * Type of action.
+   */
   type: string;
   payload?: any;
 }
 
+/**
+ * Initial async reducerstate
+ */
 export interface InitialAsyncState {
   data: any;
+
+  /**
+   * Tell if a reducer is pending for any work
+   */
   pending: boolean;
+
+  /**
+   * Tell if a reducer has error
+   */
   error: any;
 }
 
+/**
+ * @ignore
+ */
 export interface AsyncPagingData {
   id: any;
 }
@@ -33,6 +52,9 @@ export interface AsyncPagingPayload extends AsyncPagingData {
   firstOffset: boolean;
 }
 
+/**
+ * @ignore
+ */
 export interface AsyncPagingAction {
   type: string;
   payload: AsyncPagingPayload;

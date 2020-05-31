@@ -23,11 +23,12 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "bootstrap": "yarn example && yarn && yarn pods",
+    "doc": "yarn typedoc --theme minimal --excludeNotExported --name 'Redux Kit' --includeVersion --exclude '**/*+(index|.test).tsx' --out docs src"
   },
   "keywords": [
-    "redux-kit",
-    "react-native-redux-kit"
+    "@karonatourn/redux-kit",
+    "redux-kit"
   ],
   "repository": "https://github.com/Karona-Tourn/redux-kit",
   "author": "Karona Tourn <tournkarona@gmail.com> (https://github.com/Karona-Tourn)",
@@ -56,6 +57,7 @@
     "react-native": "~0.61.5",
     "redux-saga": "^1.1.3",
     "release-it": "^13.5.8",
+    "typedoc": "^0.17.7",
     "typescript": "^3.8.3"
   },
   "peerDependencies": {
@@ -132,8 +134,8 @@
     ]
   },
   "dependencies": {
-    "@types/qs": "^6.9.3",
-    "immer": "^6.0.5",
-    "qs": "^6.9.4"
+    "@types/qs": "6.9.3",
+    "immer": "6.0.5",
+    "qs": "6.9.4"
   }
 }

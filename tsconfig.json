@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "redux-kit": ["./src/index"]
+      "@karonatourn/redux-kit": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
