@@ -3,10 +3,10 @@ import { actionTypeMaker } from './actionKits';
 
 /**
  * Redux action
- * 
+ *
  * @ignore
  */
-export interface AsyncAction {
+export interface IAsyncAction {
   /**
    * Type of action.
    */
@@ -17,7 +17,7 @@ export interface AsyncAction {
 /**
  * Initial async reducerstate
  */
-export interface InitialAsyncState {
+export interface I_initialAsyncState {
   data: any;
 
   /**
@@ -34,20 +34,20 @@ export interface InitialAsyncState {
 /**
  * @ignore
  */
-export interface AsyncPagingData {
+export interface IAsyncPagingData {
   id: any;
 }
 
-export interface InitialAsyncPagingState {
-  data: AsyncPagingData[];
+export interface I_initialAsyncPagingState {
+  data: IAsyncPagingData[];
   offset: number;
   pending: boolean;
   error: any;
   hasMore: boolean;
 }
 
-export interface AsyncPagingPayload extends AsyncPagingData {
-  data: AsyncPagingData[] | AsyncPagingData;
+export interface IAsyncPagingPayload extends IAsyncPagingData {
+  data: IAsyncPagingData[] | IAsyncPagingData;
   cleanPrevious: boolean;
   firstOffset: boolean;
 }
@@ -55,22 +55,56 @@ export interface AsyncPagingPayload extends AsyncPagingData {
 /**
  * @ignore
  */
-export interface AsyncPagingAction {
+export interface IAsyncPagingAction {
   type: string;
-  payload: AsyncPagingPayload;
+  payload: IAsyncPagingPayload;
 }
 
-export function createReducers(actionTypes: { [key: string]: [string, any] }) {
-  const keys = Object.keys(actionTypes);
-  const reducers: {
-    [key: string]: (state: any, action: AsyncAction) => any;
-  } = {};
+/**
+ * Action types that will become sub-reducers
+ */
+export interface IReducerBatchInit {
+  /**
+   * Array with fixed 2 elements represeting conditional action type at first index and
+   * initial state at second index
+   */
+  [key: string]: [string, any];
+}
+
+/**
+ * Action types that will become sub-reducers
+ */
+export interface IReducerBatch {
+  [key: string]: (state: any, action: IAsyncAction) => any;
+}
+
+/**
+ * Create a batch of reducer object that each property representing nested reducers
+ *
+ * @param {IReducerBatchInit} init
+ *
+ * ```javascript
+ * const reducers = createReducerBatch({
+ *  mute: ['SET_MUTE', false],
+ *  profile: ['SET_PROFILE', { name: '', gender: '' }]
+ * });
+ *
+ * // You will get a reducer like the following one
+ * reducers = {
+ *  mute: function (state = false, action) { ... },
+ *  profile: function (state = { name: '', gender: '' }, action) { ... }
+ * }
+ * ```
+ */
+export function createReducerBatch(init: IReducerBatchInit): IReducerBatch {
+  const keys = Object.keys(init);
+  const reducers: IReducerBatch = {};
 
   for (let key of keys) {
-    const option = actionTypes[key];
+    const option = init[key];
     const actionType = option[0];
     const initialState = option[1] || null;
-    reducers[key] = function (state = initialState, action: AsyncAction) {
+    reducers[key] = function (state = initialState, action: IAsyncAction) {
       switch (action.type) {
         case actionType:
           return action.payload;
@@ -83,22 +117,62 @@ export function createReducers(actionTypes: { [key: string]: [string, any] }) {
   return reducers;
 }
 
+export interface IReducerGroupNode {
+  /**
+   * Action type
+   */
+  type: string;
+
+  /**
+   * Initial state
+   */
+  initState?: any;
+
+  /**
+   * Callback will be invoked when found a match action type to tell how state will be changed
+   *
+   * @param state
+   * @param action
+   * @returns Changed state
+   */
+  onUpdate?: ((state: any, action: IAsyncAction) => any) | null | undefined;
+}
+
+export interface IReducerGroupInit {
+  [key: string]: IReducerGroupNode;
+}
+
+export interface IReducerGroupResetNode {
+  /**
+   * Action type
+   */
+  type: string;
+
+  /**
+   * Callback will be invoked when found a match action type to tell how state will be changed
+   *
+   * @param state
+   * @param action
+   * @returns Changed state
+   */
+  onUpdate?: ((state: any, action: IAsyncAction) => any) | null | undefined;
+}
+
+export interface IReducerGroupState {
+  [key: string]: any;
+}
+
+/**
+ * Help create a reducer that you can manage how state should be changed in nested reducers
+ *
+ * @param options
+ * @param resetOption
+ */
 export function createReducerGroup(
-  options: {
-    [key: string]: {
-      type: string;
-      initState?: any;
-      onUpdate?: (state: any, action: AsyncAction) => any;
-    };
-  },
-  resetOption: {
-    type: string;
-    onUpdate?: (state: any, action: AsyncAction) => any;
-  }
-) {
-  const mainInitialState: {
-    [key: string]: any;
-  } = {};
+  options: IReducerGroupInit,
+  resetOption: IReducerGroupResetNode
+): (state: IReducerGroupState, action: IAsyncAction) => IReducerGroupState {
+  const mainInitialState: IReducerGroupState = {};
   const keys = Object.keys(options);
 
   for (let key of keys) {
@@ -106,7 +180,7 @@ export function createReducerGroup(
     mainInitialState[key] = option.initState || null;
   }
 
-  return function (state = mainInitialState, action: AsyncAction) {
+  return function (state = mainInitialState, action: IAsyncAction) {
     for (let key of keys) {
       const option = options[key];
       if (option.type == action.type) {
@@ -138,16 +212,48 @@ export function createReducerGroup(
   };
 }
 
+/**
+ * Create a reducer that working with work related steps of state changes like: `PENDING` => `SUCCESS` or `FAIL`.
+ * This function works closely with saga function createAsyncApiWatcher
+ * 
+ * __Motivation__
+ * ```javascript
+ * // Old way
+ * const profile = (state = { data: null, pending: false, error: null }, action) => {
+ *  switch(action.type) {
+ *    case 'FETCH_USER_PROFILE_PENDING':
+ *      return { pending: true };
+ *    case 'FETCH_USER_PROFILE_SUCCESS':
+ *      return { pending: false, data: action.payload };
+ *    case 'FETCH_USER_PROFILE_FAIL':
+ *      return { pending: false, error: action.payload };
+ *    default:
+ *      return state;
+ *  }
+ * }
+ * 
+ * // New way
+ * const profile = createAsyncReducer('FETCH_USER_PROFILE');
+ * ```
+ *
+ * @param actionTypePrefix
+ * @param initialState Initial state in form of ```{ data: any, pending: boolean, error: any }```
+ *
+ * ```javascript
+ * // Example
+ * const profile = createAsyncReducer('FETCH_USER_PROFILE');
+ * ```
+ */
 export function createAsyncReducer(
   actionTypePrefix: string,
-  initialState: InitialAsyncState = { data: null, pending: false, error: null }
+  initialState: I_initialAsyncState = { data: null, pending: false, error: null }
 ) {
   const PENDING = actionTypeMaker.PENDING(actionTypePrefix);
   const SUCCESS = actionTypeMaker.SUCCESS(actionTypePrefix);
   const FAIL = actionTypeMaker.FAIL(actionTypePrefix);
   const RESET = actionTypeMaker.RESET(actionTypePrefix);
 
-  return function (state = initialState, action: AsyncAction) {
+  return function (state = initialState, action: IAsyncAction) {
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
@@ -172,9 +278,52 @@ export function createAsyncReducer(
   };
 }
 
+/**
+ * Create a reducer that working with work related steps of state changes like: `PENDING` => `SUCCESS` or `FAIL`.
+ * Moreover main use is to target work related to pagination (`limit` and `offset`) with server request, database and so on.
+ * This function works closely with saga function createAsyncPagingApiWatcher
+ * 
+  * __Motivation__
+ * ```javascript
+ * // Old way
+ * const carts = (state = { data: [], offset: 0, pending: false, error: null, hasMore: true }, action) => {
+ *  switch(action.type) {
+ *    case 'FETCH_CARTS_PENDING':
+ *      // return new state telling fetching cart data is pending
+ *    case 'FETCH_CARTS_SUCCESS':
+ *      // return new state with the fetched data of the cart
+ *    case 'FETCH_CARTS_FAIL':
+ *      // return new state telling fetching carts failed
+ *    case 'FETCH_CARTS_ADD_FIRST':
+ *      // return new state with new cart data inserted at first index of the data array
+ *    case 'FETCH_CARTS_ADD_LAST':
+ *      // return new state with new cart data inserted at last index of the data array
+ *    case 'FETCH_CARTS_REMOVE':
+ *      // return new state that one cart item of all is removed
+ *    case 'FETCH_CARTS_UPDATE':
+ *      // return new state that one cart item of all is updated
+ *    case 'FETCH_CARTS_REPLACE':
+ *      // return new state that one cart item of all is replaced with another one
+ *    default:
+ *      return state;
+ *  }
+ * }
+ * 
+ * // New way
+ * const carts = createAsyncPagingReducer('FETCH_CARTS');
+ * ```
+ * 
+ * @param actionTypePrefix
+ * @param initialState Initial state in form of ```{ data: Array<T extends { id: any }>, offset: 0, pending: boolean, error: any, hasMore: boolean }```
+ *
+ * ```javascript
+ * // Example
+ * const carts = createAsyncPagingReducer('FETCH_CARTS');
+ * ```
+ */
 export function createAsyncPagingReducer(
   actionTypePrefix: string,
-  initialState: InitialAsyncPagingState = {
+  initialState: I_initialAsyncPagingState = {
     data: [],
     offset: 0,
     pending: false,
@@ -192,7 +341,7 @@ export function createAsyncPagingReducer(
   const REPLACE = actionTypeMaker.REPLACE(actionTypePrefix);
   const REMOVE = actionTypeMaker.REMOVE(actionTypePrefix);
 
-  return function (state = initialState, action: AsyncPagingAction) {
+  return function (state = initialState, action: IAsyncPagingAction) {
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {

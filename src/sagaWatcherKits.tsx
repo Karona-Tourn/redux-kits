@@ -12,7 +12,7 @@ import {
 } from 'redux-saga/effects';
 import qs from 'qs';
 import { actionTypeMaker } from './actionKits';
-import { AsyncAction } from './reducerKits';
+import { IAsyncAction } from './reducerKits';
 
 export interface ApiStatus {
   pending?: string | null;
@@ -54,7 +54,7 @@ export function parseError(error: { message: string; status: number }) {
 }
 
 type BaseUrlSelector =
-  | ((config: ApiConfig, state: any, action: AsyncAction) => string)
+  | ((config: ApiConfig, state: any, action: IAsyncAction) => string)
   | null;
 var _baseUrlSelector: BaseUrlSelector = null;
 const setBaseUrlSelector = (selector: BaseUrlSelector) => {
@@ -65,7 +65,7 @@ type HttpHeaderSelector =
   | ((
       config: ApiConfig,
       state: any,
-      action: AsyncAction,
+      action: IAsyncAction,
       http: HttpPayload
     ) => Headers)
   | null;
@@ -78,7 +78,7 @@ type ExecutingMiddlewareGenerator =
   | ((
       config: ApiConfig,
       state: any,
-      action: AsyncAction,
+      action: IAsyncAction,
       http: HttpPayload
     ) => any)
   | null;
@@ -90,7 +90,7 @@ const setExecutingMiddlewareGenerator = (
 };
 
 type FailExecutingGeneratorType =
-  | ((config: ApiConfig, action: AsyncAction) => any)
+  | ((config: ApiConfig, action: IAsyncAction) => any)
   | null;
 var _failExecutingGenerator: ((...args: any[]) => any) | null = null;
 const setFailExecutingGenerator = (generator: FailExecutingGeneratorType) => {
@@ -104,7 +104,7 @@ export const sagaHttpConfiguration = {
   setFailExecutingGenerator,
 };
 
-export function* runApi(config: RunApiConfig, rootAction: AsyncAction) {
+export function* runApi(config: RunApiConfig, rootAction: IAsyncAction) {
   const task = yield fork(
     function* (config, rootAction) {
       try {
