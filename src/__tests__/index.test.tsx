@@ -1,5 +1,5 @@
 import { actionTypeMaker, getCachedActionTypes } from '../actionKits';
-import { createAsyncReducer, createReducers } from '../reducerKits';
+import { createAsyncReducer, createReducerBatch } from '../reducerKits';
 
 describe('Test action types', () => {
   it('Test action type makers', () => {
@@ -38,8 +38,8 @@ describe('Test reducers', () => {
     ).toBe(defaultState);
   });
 
-  it('Test createReducers', () => {
-    const reducer = createReducers({
+  it('Test createReducerBatch', () => {
+    const reducer = createReducerBatch({
       volume: ['SET_VOLUME', 1.0],
       mute: ['SET_MUTE', false],
     });
@@ -47,5 +47,5 @@ describe('Test reducers', () => {
     expect(reducer.volume(1.0, { type: 'SET_VOLUME', payload: 0.5 })).toBe(0.5);
   });
 
-  // it('Test createReducers', () => {});
+  // it('Test createReducerBatch', () => {});
 });

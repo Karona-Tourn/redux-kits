@@ -1,7 +1,5 @@
 # redux-kit
 
-Support working with Redux
-
 ## Installation
 
 ```sh
@@ -13,10 +11,6 @@ or
 ```sh
 yarn add @karonatourn/redux-kit
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 

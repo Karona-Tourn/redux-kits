@@ -14,7 +14,23 @@ import qs from 'qs';
 import { actionTypeMaker } from './actionKits';
 import { IAsyncAction } from './reducerKits';
 
-export interface ApiStatus {
+/**
+ * Instance object that will become:
+ *
+ * ```javascript
+ * // Example
+ * {
+ *  pending: 'FETCH_CART_PENDING',
+ *  success: 'FETCH_CART_SUCCESS',
+ *  fail: 'FETCH_CART_FAIL',
+ *  reset: 'FETCH_CART_RESET',
+ *  cancel: 'FETCH_CART_CANCEL'
+ * }
+ * ```
+ *
+ * Note: it will be used by [[runApi]]
+ */
+export interface IAsyncStatus {
   pending?: string | null;
   success: string | null;
   fail: string | null;
@@ -22,30 +38,56 @@ export interface ApiStatus {
   cancel?: string | null;
 }
 
-type ApiRequest = () => Promise<any>;
+export type PromiseFunction = () => Promise<any>;
 
-export interface RunApiConfig {
-  getApi: ((state: any, action: any) => ApiRequest[]) | null;
-  statuses?: ApiStatus | null;
+export interface IAsyncConfig {
+  /**
+   * @deprecated Use [[getPromises]] instead
+   */
+  getApi?: ((state: any, action: any) => PromiseFunction[]) | null;
+  getPromises?: ((state: any, action: any) => PromiseFunction[]) | null;
+
+  /**
+   * Statues to be override
+   */
+  statuses?: IAsyncStatus | null;
+  /**
+   * Map results from finished promises to a payload to be stored in reducer with a matched action type ending with `_SUCCESS`.
+   * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
+   */
   mapResultToPayload?:
     | ((state: any, action: any, results: any[] | any) => object)
     | null;
+  /**
+   * Map dispatched action to pending payload to be stored in reducer with a matched action type ending with `_PENDING`.
+   * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
+   */
   mapActionToPendingPayload?: ((state: any, action: any) => object) | null;
+  /**
+   * Tell if need to reset a reducer when dispatching a action type action type ending with `_CANCEL`
+   * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
+   */
   resetIfCanceled?: boolean;
 }
 
-export interface ApiConfig extends RunApiConfig {
+export interface WatcherConfig extends IAsyncConfig {
+  /**
+   * Main action type corresponding to action type prefix in [[createAsyncPagingReducer]] or [[createAsyncReducer]]
+   */
   actionPrefix: string;
 }
 
-type HttpPayload = {
+export type HttpPayload = {
   url: string;
-  headers: Headers;
+  headers?: Headers;
   method: 'GET' | 'POST' | 'DELETE' | 'UPDATE';
-  params: object;
-  body: object;
+  params?: object;
+  body?: object;
 };
 
+/**
+ * @ignore
+ */
 export function parseError(error: { message: string; status: number }) {
   return {
     message: error.message,
@@ -54,16 +96,16 @@ export function parseError(error: { message: string; status: number }) {
 }
 
 type BaseUrlSelector =
-  | ((config: ApiConfig, state: any, action: IAsyncAction) => string)
+  | ((config: WatcherConfig, state: any, action: IAsyncAction) => string)
   | null;
 var _baseUrlSelector: BaseUrlSelector = null;
 const setBaseUrlSelector = (selector: BaseUrlSelector) => {
   _baseUrlSelector = selector;
 };
 
-type HttpHeaderSelector =
+export type HttpHeaderSelector =
   | ((
-      config: ApiConfig,
+      config: WatcherConfig,
       state: any,
       action: IAsyncAction,
       http: HttpPayload
@@ -74,37 +116,84 @@ const setHeaderSelector = (selector: HttpHeaderSelector) => {
   _httpHeaderSelector = selector;
 };
 
-type ExecutingMiddlewareGenerator =
+export type MiddleSagaCallback =
   | ((
-      config: ApiConfig,
+      config: WatcherConfig,
       state: any,
       action: IAsyncAction,
       http: HttpPayload
     ) => any)
   | null;
-var _executingMiddlewareGenerator: ((...args: any[]) => any) | null = null;
-const setExecutingMiddlewareGenerator = (
-  generator: ExecutingMiddlewareGenerator
-) => {
-  _executingMiddlewareGenerator = generator;
+var _middleSagaCallback: ((...args: any[]) => any) | null = null;
+
+/**
+ * Set a saga function to be executed between pending status and success/fail status
+ *
+ * @param saga Saga function
+ */
+export const setMiddleSagaCallback = (saga: MiddleSagaCallback) => {
+  _middleSagaCallback = saga;
 };
 
-type FailExecutingGeneratorType =
-  | ((config: ApiConfig, action: IAsyncAction) => any)
+type FailSagaCallback =
+  | ((config: WatcherConfig, action: IAsyncAction) => any)
   | null;
-var _failExecutingGenerator: ((...args: any[]) => any) | null = null;
-const setFailExecutingGenerator = (generator: FailExecutingGeneratorType) => {
-  _failExecutingGenerator = generator;
+var _failSagaCallback: ((...args: any[]) => any) | null = null;
+
+/**
+ * Set a saga function to be executed after fail status detected
+ *
+ * @param saga Saga function
+ */
+export const setFailSagaCallback = (saga: FailSagaCallback) => {
+  _failSagaCallback = saga;
 };
 
-export const sagaHttpConfiguration = {
+/**
+ * @deprecated This will be removed soon. use [[setFailSagaCallback]], [[setMiddleSagaCallback]], [[setHeaderSelector]] and [[setBaseUrlSelector]] directly instead.
+ */
+export const sagaConfiguration = {
   setBaseUrlSelector,
   setHeaderSelector,
-  setExecutingMiddlewareGenerator,
-  setFailExecutingGenerator,
+  setExecutingMiddlewareGenerator: setMiddleSagaCallback,
+  setFailExecutingGenerator: setFailSagaCallback,
 };
 
-export function* runApi(config: RunApiConfig, rootAction: IAsyncAction) {
+/**
+ * @deprecated The function will be removed soon. Use [[sagaConfiguration]] instead.
+ */
+export const sagaHttpConfiguration = sagaConfiguration;
+
+/**
+ * Function for helping running async task having status pending, success, fail and cancel
+ *
+ * @param config
+ * @param rootAction
+ *
+ * ```javascript
+ * // Example
+ * function* saga() {
+ *  const task = yield fork(runAsync, {
+ *    getPromises: () => [() => api.fetchCart()],
+ *    statuses: {
+ *      pending: actionTypeMaker.PENDING('FETCH_CART'),
+ *      success: actionTypeMaker.SUCCESS('FETCH_CART'),
+ *      fail: actionTypeMaker.FAIL('FETCH_CART'),
+ *      reset: actionTypeMaker.RESET('FETCH_CART'),
+ *      cancel: actionTypeMaker.CANCEL('FETCH_CART'),
+ *    }
+ *   });
+ * 
+ *  // Wait if success or fail
+ *  yield take([actionTypeMaker.SUCCESS('FETCH_CART'), actionTypeMaker.FAIL('FETCH_CART')])
+ * }
+ * ```
+ */
+export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
+  if (!config.getPromises) {
+    config.getPromises = config.getApi;
+  }
+
   const task = yield fork(
     function* (config, rootAction) {
       try {
@@ -124,8 +213,8 @@ export function* runApi(config: RunApiConfig, rootAction: IAsyncAction) {
         }
 
         // Execute generator function middleware
-        if (_executingMiddlewareGenerator) {
-          yield call(_executingMiddlewareGenerator, config, state, rootAction);
+        if (_middleSagaCallback) {
+          yield call(_middleSagaCallback, config, state, rootAction);
         }
 
         let payload = null;
@@ -163,10 +252,10 @@ export function* runApi(config: RunApiConfig, rootAction: IAsyncAction) {
           );
         }
 
-        if (config.getApi) {
+        if (config.getPromises) {
           httpRequests = httpRequests.concat(
             config
-              .getApi(state, rootAction)
+              .getPromises(state, rootAction)
               .map((e: () => Promise<any>) => call(e))
           );
         }
@@ -238,17 +327,40 @@ export function* runApi(config: RunApiConfig, rootAction: IAsyncAction) {
     yield cancel(task);
   }
 
-  if (_failExecutingGenerator) {
+  if (_failSagaCallback) {
     if (action.type == config?.statuses?.fail) {
-      yield call(_failExecutingGenerator, config, action);
+      yield call(_failSagaCallback, config, action);
     }
   }
 }
 
-export function createAsyncApiWatcher(
-  config: ApiConfig = {
+/**
+ *
+ * @deprecated The function will be removed soon. Use [[runAsync]] instead.
+ */
+export const runApi = runAsync;
+
+/**
+ * Create a saga watcher. It works closely with the function [[createAsyncReducer]] creating a reducer with the same matched prefix action type
+ *
+ * @param {WatcherConfig} config
+ * 
+ * ```javascript
+ * // Saga watcher
+ * const watchFetchCart = createAsyncWatcher({
+ *  actionPrefix: 'FETCH_CART',
+ *  getPromises: () => [() => api.fetchCart()]
+ * });
+ * 
+ * // Reducer
+ * const carts = createAsyncReducer('FETCH_CART')
+ * ```
+ */
+export function createAsyncWatcher(
+  config: WatcherConfig = {
     actionPrefix: '',
     getApi: null,
+    getPromises: null,
     statuses: null,
     mapResultToPayload: null,
     mapActionToPendingPayload: null,
@@ -269,6 +381,7 @@ export function createAsyncApiWatcher(
             fail: actionTypeMaker.FAIL(actionPrefix),
             cancel: actionTypeMaker.CANCEL(actionPrefix),
             reset: actionTypeMaker.RESET(actionPrefix),
+            ...(statuses || {}),
           },
         },
         action
@@ -277,10 +390,34 @@ export function createAsyncApiWatcher(
   };
 }
 
-export function createAsyncPagingApiWatcher(
-  config: ApiConfig = {
+/**
+ * Create a saga watcher. It works closely with the function [[createAsyncReducer]] creating a reducer with the same matched prefix action type
+ *
+ * @deprecated The function will be removed soon. Use [[createAsyncWatcher]] instead.
+ */
+export const createAsyncApiWatcher = createAsyncWatcher;
+
+/**
+ * Create a saga watcher. It works closely with the function [[createAsyncPagingReducer]] creating a reducer with the same matched prefix action type
+ *
+ * @param {WatcherConfig} config
+ * 
+ * ```javascript
+ * // Saga watcher
+ * const watchFetchCart = createAsyncPagingWatcher({
+ *  actionPrefix: 'FETCH_PRODUCTS',
+ *  getPromises: (state, action) => [() => api.fetchProduct({ limit: action.payload.limit, offset: action.payload.firstOffset ? 0 : state.products.offset })]
+ * });
+ * 
+ * // Reducer
+ * const products = createAsyncPagingReducer('FETCH_PRODUCTS');
+ * ```
+ */
+export function createAsyncPagingWatcher(
+  config: WatcherConfig = {
     actionPrefix: '',
     getApi: null,
+    getPromises: null,
     statuses: null,
     mapResultToPayload: null,
     mapActionToPendingPayload: null,
@@ -325,3 +462,10 @@ export function createAsyncPagingApiWatcher(
     },
   });
 }
+
+/**
+ * Create a saga watcher. It works closely with the function [[createAsyncPagingReducer]] creating a reducer with the same matched prefix action type
+ *
+ * @deprecated The function will be removed soon. Use [[createAsyncPagingWatcher]] instead.
+ */
+export const createAsyncPagingApiWatcher = createAsyncPagingWatcher;
