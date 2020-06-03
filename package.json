@@ -27,7 +27,6 @@
     "doc": "yarn typedoc --theme minimal --excludeNotExported --name 'Redux Kit' --includeVersion --exclude '**/*+(index|.test).tsx' --out docs src"
   },
   "keywords": [
-    "redux-kits",
     "redux-kits"
   ],
   "repository": "https://github.com/Karona-Tourn/redux-kits",

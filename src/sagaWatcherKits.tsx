@@ -263,9 +263,12 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         const responses = yield all(httpRequests);
 
         // Find failed response
-        const failResponse = responses.find((e: any) => e.status !== 200);
+        const failResponse = responses.find(
+          (e: any) =>
+            e.status !== undefined && e.status !== null && e.status !== 200
+        );
 
-        if (failResponse) {
+        if (failResponse && failResponse.json) {
           const error: any = yield call([failResponse, 'json']);
 
           throw {
@@ -274,9 +277,14 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           };
         }
 
-        const datas = yield all(responses.map((e: any) => call([e, 'json'])));
+        const datas = yield all(
+          responses.map((e: any) => (e.json ? call([e, 'json']) : e))
+        );
 
-        const failData = datas.find((e: any) => !e.success);
+        const failData = datas.find(
+          (e: any) =>
+            e.success !== undefined && e.success !== null && !e.success
+        );
         if (failData) {
           throw {
             message: failData.message,
@@ -372,7 +380,7 @@ export function createAsyncWatcher(
   return function* () {
     yield takeLatest(actionPrefix, function* (action) {
       yield call(
-        runApi,
+        runAsync,
         {
           ...restConfig,
           statuses: {
