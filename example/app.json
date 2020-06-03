@@ -1,0 +1,22 @@
+{
+  "name": "redux-kit-example",
+  "displayName": "ReduxKit Example",
+  "expo": {
+    "name": "redux-kit-example",
+    "slug": "redux-kit-example",
+    "description": "Example app for @karonatourn/redux-kit",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
