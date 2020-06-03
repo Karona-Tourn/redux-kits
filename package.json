@@ -1,6 +1,6 @@
 {
-  "name": "@karonatourn/redux-kit",
-  "version": "0.1.3",
+  "name": "redux-kit",
+  "version": "0.1.4",
   "description": "Support working with Redux",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -27,7 +27,7 @@
     "doc": "yarn typedoc --theme minimal --excludeNotExported --name 'Redux Kit' --includeVersion --exclude '**/*+(index|.test).tsx' --out docs src"
   },
   "keywords": [
-    "@karonatourn/redux-kit",
+    "redux-kit",
     "redux-kit"
   ],
   "repository": "https://github.com/Karona-Tourn/redux-kit",

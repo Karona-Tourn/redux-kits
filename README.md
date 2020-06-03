@@ -5,13 +5,13 @@ Sorry the leak of the documents because this package is target for my personal u
 ## Installation
 
 ```sh
-npm install @karonatourn/redux-kit
+npm install redux-kit
 ```
 
 or
 
 ```sh
-yarn add @karonatourn/redux-kit
+yarn add redux-kit
 ```
 
 ## License

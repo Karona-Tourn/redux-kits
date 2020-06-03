@@ -1,6 +1,6 @@
 {
   "name": "redux-kit-example",
-  "description": "Example app for @karonatourn/redux-kit",
+  "description": "Example app for redux-kit",
   "version": "0.0.1",
   "private": true,
   "main": "index",

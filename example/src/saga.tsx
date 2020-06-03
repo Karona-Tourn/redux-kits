@@ -1,5 +1,5 @@
 import { all } from 'redux-saga/effects';
-import { createAsyncApiWatcher } from '@karonatourn/redux-kit';
+import { createAsyncApiWatcher } from 'redux-kit';
 import actionType from './actionType';
 
 const watchFetchUsers = createAsyncApiWatcher({
