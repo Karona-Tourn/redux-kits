@@ -1,10 +1,10 @@
 {
-  "name": "redux-kit-example",
+  "name": "redux-kits-example",
   "displayName": "ReduxKit Example",
   "expo": {
-    "name": "redux-kit-example",
-    "slug": "redux-kit-example",
-    "description": "Example app for redux-kit",
+    "name": "redux-kits-example",
+    "slug": "redux-kits-example",
+    "description": "Example app for redux-kits",
     "privacy": "public",
     "version": "1.0.0",
     "platforms": [

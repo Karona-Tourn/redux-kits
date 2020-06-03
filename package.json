@@ -1,5 +1,5 @@
 {
-  "name": "redux-kit",
+  "name": "redux-kits",
   "version": "0.1.6",
   "description": "Support working with Redux",
   "main": "lib/commonjs/index",
@@ -13,7 +13,7 @@
     "android",
     "ios",
     "cpp",
-    "redux-kit.podspec"
+    "redux-kits.podspec"
   ],
   "scripts": {
     "test": "jest",
@@ -27,16 +27,16 @@
     "doc": "yarn typedoc --theme minimal --excludeNotExported --name 'Redux Kit' --includeVersion --exclude '**/*+(index|.test).tsx' --out docs src"
   },
   "keywords": [
-    "redux-kit",
-    "redux-kit"
+    "redux-kits",
+    "redux-kits"
   ],
-  "repository": "https://github.com/Karona-Tourn/redux-kit",
+  "repository": "https://github.com/Karona-Tourn/redux-kits",
   "author": "Karona Tourn <tournkarona@gmail.com> (https://github.com/Karona-Tourn)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Karona-Tourn/redux-kit/issues"
+    "url": "https://github.com/Karona-Tourn/redux-kits/issues"
   },
-  "homepage": "https://github.com/Karona-Tourn/redux-kit#readme",
+  "homepage": "https://github.com/Karona-Tourn/redux-kits#readme",
   "devDependencies": {
     "@commitlint/config-conventional": "^8.3.4",
     "@react-native-community/bob": "^0.14.5",
