@@ -1,1 +1,4 @@
 theme: jekyll-theme-tactile
+include:
+  - "_*_.html"
+  - "_*_.*.html"
