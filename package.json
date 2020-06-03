@@ -1,6 +1,6 @@
 {
   "name": "redux-kits",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Support working with Redux",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
