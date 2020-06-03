@@ -4,15 +4,20 @@ import actionType from './actionType';
 
 const watchFetchUsers = createAsyncApiWatcher({
   actionPrefix: actionType.FETCH_USERS,
-  getApi: () => [
+  getPromises: () => [
     () =>
-      fetch('', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            data: [...Array(20)].map((_, index) => ({
+              id: index + 1,
+              name: `User ${index + 1}`,
+            })),
+          });
+        }, 1000);
       }),
   ],
+  mapResultToPayload: (state, action, results) => results[0],
 });
 
 export default function* saga() {
