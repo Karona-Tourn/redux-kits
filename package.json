@@ -1,6 +1,6 @@
 {
   "name": "@karonatourn/redux-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Support working with Redux",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -124,6 +124,9 @@
         "preset": "angular"
       }
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "@react-native-community/bob": {
     "source": "src",
