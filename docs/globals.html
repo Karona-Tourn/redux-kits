@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Redux Kit - v0.1.8 | Redux Kit - v0.1.8</title>
-	<meta name="description" content="Documentation for Redux Kit - v0.1.8">
+	<title>Redux Kit - v0.1.10 | Redux Kit - v0.1.10</title>
+	<meta name="description" content="Documentation for Redux Kit - v0.1.10">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
 /* ==========================================================================
@@ -2692,7 +2692,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">Redux Kit - v0.1.8</a></strong>
+					<strong><a href="index.html">Redux Kit - v0.1.10</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2731,6 +2731,7 @@ img {
 				<h1>redux-kits</h1>
 			</a>
 			<p>Sorry the leak of the documents because this package is target for my personal usage. In case you found it is useful for you, so it can be a right one for you.</p>
+			<p>You also need to install <a href="https://redux-saga.js.org">redux-saga</a>.</p>
 			<p>Document <a href="https://karona-tourn.github.io/redux-kits">here</a></p>
 			<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 				<h2>Installation</h2>
@@ -2738,6 +2739,103 @@ img {
 			<pre><code class="language-sh">npm install redux-kits</code></pre>
 			<p>or</p>
 			<pre><code class="language-sh">yarn add redux-kits</code></pre>
+			<a href="#motiviation" id="motiviation" style="color: inherit; text-decoration: none;">
+				<h2>Motiviation</h2>
+			</a>
+			<pre><code class="language-javascript"><span class="hljs-comment">// Action</span>
+<span class="hljs-keyword">const</span> fetchCart = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART'</span>,
+});</code></pre>
+			<pre><code class="language-javascript"><span class="hljs-comment">// Previously, I wrote the following code</span>
+
+<span class="hljs-comment">// Reducer</span>
+<span class="hljs-keyword">const</span> carts = <span class="hljs-function">(<span class="hljs-params">state = { data: <span class="hljs-literal">null</span>, pending: <span class="hljs-literal">false</span>, error: <span class="hljs-literal">null</span> }, action</span>) =&gt;</span> {
+  <span class="hljs-keyword">switch</span> (action.type) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'FETCH_CART_PENDING'</span>:
+    <span class="hljs-comment">// return updated state telling fetching cart is pending</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'FETCH_CART_SUCCESS'</span>:
+    <span class="hljs-comment">// return updated state with provided data of payload</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'FETCH_CART_FAIL'</span>:
+    <span class="hljs-comment">// return updated state with error data</span>
+    <span class="hljs-keyword">default</span>:
+      <span class="hljs-keyword">return</span> state;
+  }
+};
+
+<span class="hljs-comment">// Saga</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span>* <span class="hljs-title">watchFetchCart</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">yield</span> takeLatest(<span class="hljs-string">'FETCH_CART'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>* (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">try</span> {
+      <span class="hljs-keyword">yield</span> put({ <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART_PENDING'</span> });
+
+      <span class="hljs-comment">// Request to server to fetch cart data</span>
+
+      <span class="hljs-keyword">yield</span> put({ <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART_SUCCESS'</span>, <span class="hljs-attr">payload</span>: response });
+    } <span class="hljs-keyword">catch</span> (error) {
+      <span class="hljs-keyword">yield</span> put({ <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART_FAIL'</span>, <span class="hljs-attr">payload</span>: error });
+    }
+  });
+}</code></pre>
+			<pre><code class="language-javascript"><span class="hljs-comment">// Now, I wrote the following code</span>
+<span class="hljs-comment">// Reducer</span>
+<span class="hljs-keyword">const</span> carts = createAsyncReducer(<span class="hljs-string">'FETCH_CART'</span>);
+
+<span class="hljs-comment">// Saga</span>
+<span class="hljs-keyword">const</span> watchFetchCart = createAsyncWatcher({
+  <span class="hljs-attr">actionPrefix</span>: <span class="hljs-string">'FETCH_CART'</span>,
+  <span class="hljs-attr">getPromises</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> [<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> fetch(<span class="hljs-string">'fetch cart url'</span>)],
+});</code></pre>
+			<pre><code class="language-javascript"><span class="hljs-comment">// More advance code working with pagination</span>
+
+<span class="hljs-comment">// Actions</span>
+<span class="hljs-keyword">const</span> fetchCart = <span class="hljs-function">(<span class="hljs-params">{ firstOffset, limit, cleanPrevious }</span>) =&gt;</span> ({
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART'</span>,
+  <span class="hljs-attr">payload</span>: {
+    firstOffset,
+    limit,
+    cleanPrevious,
+  },
+});
+
+<span class="hljs-keyword">const</span> removeCart = <span class="hljs-function">(<span class="hljs-params">id</span>) =&gt;</span> ({
+  <span class="hljs-attr">type</span>: actionTypeMaker.REMOVE(<span class="hljs-string">'FETCH_CART'</span>),
+  <span class="hljs-attr">payload</span>: id,
+});
+
+<span class="hljs-keyword">const</span> addCart = <span class="hljs-function">(<span class="hljs-params">{ id, itemName }</span>) =&gt;</span> ({
+  <span class="hljs-attr">type</span>: actionTypeMaker.ADD_LAST(<span class="hljs-string">'FETCH_CART'</span>),
+  <span class="hljs-attr">payload</span>: {
+    id,
+    itemName,
+  },
+});
+
+<span class="hljs-keyword">const</span> clearCart = <span class="hljs-function">(<span class="hljs-params">{ id, itemName }</span>) =&gt;</span> ({
+  <span class="hljs-attr">type</span>: actionTypeMaker.RESET(<span class="hljs-string">'FETCH_CART'</span>),
+  <span class="hljs-attr">payload</span>: {
+    id,
+    itemName,
+  },
+});
+
+<span class="hljs-comment">// Reducer</span>
+<span class="hljs-keyword">const</span> carts = createAsyncPagingReducer(<span class="hljs-string">'FETCH_CART'</span>);
+
+<span class="hljs-comment">// Saga</span>
+<span class="hljs-keyword">const</span> watchFetchCart = createAsyncPagingWatcher({
+  <span class="hljs-attr">actionPrefix</span>: <span class="hljs-string">'FETCH_CART'</span>,
+  <span class="hljs-attr">getPromises</span>: <span class="hljs-function">(<span class="hljs-params">state, action</span>) =&gt;</span> [
+    <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
+      fetch(
+        <span class="hljs-string">`fetch_cart_url?offset=<span class="hljs-subst">${
+          action.payload.firstOffset ? <span class="hljs-number">0</span> : state.carts.offset
+        }</span>&amp;limit=<span class="hljs-subst">${action.payload.limit}</span>`</span>
+      ),
+  ],
+  <span class="hljs-attr">mapResultToPayload</span>: <span class="hljs-function">(<span class="hljs-params">state, action, results</span>) =&gt;</span> ({
+    <span class="hljs-attr">data</span>: results[<span class="hljs-number">0</span>],
+  }),
+});</code></pre>
 			<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 				<h2>License</h2>
 			</a>

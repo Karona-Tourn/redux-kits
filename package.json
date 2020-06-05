@@ -1,6 +1,6 @@
 {
   "name": "redux-kits",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Support working with Redux",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -9,17 +9,13 @@
   "source": "src/index",
   "files": [
     "src",
-    "lib",
-    "android",
-    "ios",
-    "cpp",
-    "redux-kits.podspec"
+    "lib"
   ],
   "scripts": {
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint --ext .js,.ts,.tsx .",
-    "prepare": "bob build",
+    "prepare": "bob build && yarn doc",
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",

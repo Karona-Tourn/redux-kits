@@ -99,7 +99,7 @@ type BaseUrlSelector =
   | ((config: WatcherConfig, state: any, action: IAsyncAction) => string)
   | null;
 var _baseUrlSelector: BaseUrlSelector = null;
-const setBaseUrlSelector = (selector: BaseUrlSelector) => {
+export const setBaseUrlSelector = (selector: BaseUrlSelector) => {
   _baseUrlSelector = selector;
 };
 
@@ -112,7 +112,7 @@ export type HttpHeaderSelector =
     ) => Headers)
   | null;
 var _httpHeaderSelector: HttpHeaderSelector = null;
-const setHeaderSelector = (selector: HttpHeaderSelector) => {
+export const setHeaderSelector = (selector: HttpHeaderSelector) => {
   _httpHeaderSelector = selector;
 };
 
@@ -152,17 +152,12 @@ export const setFailSagaCallback = (saga: FailSagaCallback) => {
 /**
  * @deprecated This will be removed soon. use [[setFailSagaCallback]], [[setMiddleSagaCallback]], [[setHeaderSelector]] and [[setBaseUrlSelector]] directly instead.
  */
-export const sagaConfiguration = {
+export const sagaHttpConfiguration = {
   setBaseUrlSelector,
   setHeaderSelector,
   setExecutingMiddlewareGenerator: setMiddleSagaCallback,
   setFailExecutingGenerator: setFailSagaCallback,
 };
-
-/**
- * @deprecated The function will be removed soon. Use [[sagaConfiguration]] instead.
- */
-export const sagaHttpConfiguration = sagaConfiguration;
 
 /**
  * Function for helping running async task having status pending, success, fail and cancel
@@ -360,6 +355,12 @@ export const runApi = runAsync;
  *  getPromises: () => [() => api.fetchCart()]
  * });
  *
+ * function* rootSaga() {
+ *  yield all([
+ *    watchFetchCart()
+ *  ]);
+ * }
+ *
  * // Reducer
  * const carts = createAsyncReducer('FETCH_CART')
  * ```
@@ -416,6 +417,12 @@ export const createAsyncApiWatcher = createAsyncWatcher;
  *  actionPrefix: 'FETCH_PRODUCTS',
  *  getPromises: (state, action) => [() => api.fetchProduct({ limit: action.payload.limit, offset: action.payload.firstOffset ? 0 : state.products.offset })]
  * });
+ *
+ * function* rootSaga() {
+ *  yield all([
+ *    watchFetchCart()
+ *  ]);
+ * }
  *
  * // Reducer
  * const products = createAsyncPagingReducer('FETCH_PRODUCTS');

@@ -46,9 +46,22 @@ export interface I_initialAsyncPagingState {
   hasMore: boolean;
 }
 
+/**
+ * Interface for action payload that will be used for [[createAsyncPagingWatcher]] and [[createAsyncPagingReducer]]
+ *
+ * @ignore
+ */
 export interface IAsyncPagingPayload extends IAsyncPagingData {
   data: IAsyncPagingData[] | IAsyncPagingData;
+
+  /**
+   * If true, it will clear field `data` from reducer matching with `_PENDING` action type
+   */
   cleanPrevious: boolean;
+
+  /**
+   * If true, field `offset` in the reducer state will be reset to 0
+   */
   firstOffset: boolean;
 }
 
@@ -81,7 +94,7 @@ export interface IReducerBatch {
 /**
  * Create a batch of reducer object that each property representing nested reducers
  *
- * @param {IReducerBatchInit} init
+ * @param init
  *
  * ```javascript
  * const reducers = createReducerBatch({
@@ -236,7 +249,7 @@ export function createReducerGroup(
  * const profile = createAsyncReducer('FETCH_USER_PROFILE');
  * ```
  *
- * @param actionTypePrefix
+ * @param actionTypePrefix Main action type
  * @param initialState Initial state in form of ```{ data: any, pending: boolean, error: any }```
  *
  * ```javascript
@@ -317,7 +330,7 @@ export function createAsyncReducer(
  * const carts = createAsyncPagingReducer('FETCH_CARTS');
  * ```
  *
- * @param actionTypePrefix
+ * @param actionTypePrefix Main action type
  * @param initialState Initial state in form of ```{ data: Array<T extends { id: any }>, offset: 0, pending: boolean, error: any, hasMore: boolean }```
  *
  * ```javascript
