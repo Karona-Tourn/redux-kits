@@ -2,11 +2,11 @@
   "name": "redux-kits",
   "version": "0.1.12",
   "description": "Support working with Redux",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
   "types": "lib/typescript/src/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
+  "react-native": "src/index.js",
+  "source": "src/index.js",
   "files": [
     "src",
     "lib"
