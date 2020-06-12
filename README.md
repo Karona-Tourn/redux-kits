@@ -1,6 +1,6 @@
 # redux-kits
 
-Sorry the leak of the documents because this package is target for my personal usage. In case you found it is useful for you, so it can be a right one for you.
+Sorry the lack of the documents because this package is target for my personal usage. In case you found it is useful for you, so it can be a right one for you.
 
 You also need to install [redux-saga](https://redux-saga.js.org).
 
@@ -98,12 +98,8 @@ const addCart = ({ id, itemName }) => ({
   },
 });
 
-const clearCart = ({ id, itemName }) => ({
+const clearCart = () => ({
   type: actionTypeMaker.RESET('FETCH_CART'),
-  payload: {
-    id,
-    itemName,
-  },
 });
 
 // Reducer
