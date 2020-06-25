@@ -377,7 +377,12 @@ export function createAsyncPagingReducer(
               : [];
           const length = data.length;
 
-          draftState.data.push(...data);
+          if (action.payload.firstOffset) {
+            draftState.data = [...data];
+          } else {
+            draftState.data.push(...data);
+          }
+
           draftState.offset = action.payload.firstOffset
             ? length
             : draftState.offset + length;
