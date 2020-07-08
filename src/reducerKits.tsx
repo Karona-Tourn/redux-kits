@@ -35,10 +35,12 @@ export interface I_initialAsyncState {
  * @ignore
  */
 export interface IAsyncPagingData {
+  [index: string]: any;
   id: any;
 }
 
 export interface I_initialAsyncPagingState {
+  [index: string]: any;
   data: IAsyncPagingData[];
   offset: number;
   pending: boolean;
@@ -371,23 +373,27 @@ export function createAsyncPagingReducer(
         });
       case SUCCESS:
         return produce(state, (draftState) => {
-          const data =
-            action.payload.data && Array.isArray(action.payload.data)
-              ? action.payload.data
-              : [];
-          const length = data.length;
+          const { data, firstOffset, ...rest } = action.payload;
+          const newData = data && Array.isArray(data) ? data : [];
+          const length = newData.length;
 
-          if (action.payload.firstOffset) {
-            draftState.data = [...data];
+          if (firstOffset) {
+            draftState.data = [...newData];
           } else {
-            draftState.data.push(...data);
+            draftState.data.push(...newData);
           }
 
-          draftState.offset = action.payload.firstOffset
-            ? length
-            : draftState.offset + length;
+          draftState.offset = firstOffset ? length : draftState.offset + length;
           draftState.hasMore = length > 0;
           draftState.error = null;
+
+          const keys = Object.keys(rest);
+          if (keys.length > 0) {
+            keys.forEach((key) => {
+              draftState[key] = rest[key];
+            });
+          }
+
           draftState.pending = false;
         });
       case ADD_LAST:
