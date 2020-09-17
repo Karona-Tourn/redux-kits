@@ -9,6 +9,7 @@ import {
   cancelled,
   cancel,
   CallEffect,
+  takeLeading,
 } from 'redux-saga/effects';
 import qs from 'qs';
 import { actionTypeMaker } from './actionKits';
@@ -28,7 +29,7 @@ import { IAsyncAction } from './reducerKits';
  * }
  * ```
  *
- * Note: it will be used by [[runApi]]
+ * Note: it will be used by [[runAsync]]
  */
 export interface IAsyncStatus {
   pending?: string | null;
@@ -56,7 +57,12 @@ export interface IAsyncConfig {
    * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
    */
   mapResultToPayload?:
-    | ((state: any, action: any, results: any[] | any) => object)
+    | ((
+        state: any,
+        action: any,
+        results: any[] | any,
+        rawResults: any[]
+      ) => object)
     | null;
   /**
    * Map dispatched action to pending payload to be stored in reducer with a matched action type ending with `_PENDING`.
@@ -68,6 +74,17 @@ export interface IAsyncConfig {
    * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
    */
   resetIfCanceled?: boolean;
+
+  /**
+   * Tell whether or not after spawning a task once, it blocks until spawned saga completes and then starts to listen for a task again.
+   * It is a choice of using between [takeLatest](https://redux-saga.js.org/docs/api/) and [takeLeading](https://redux-saga.js.org/docs/api/) in redux saga
+   */
+  listenOnceAtTime?: boolean;
+
+  /**
+   * Tell if array of promise tasks or http tasks should run in parallel or sequence
+   */
+  runInSequence?: boolean;
 }
 
 export interface WatcherConfig extends IAsyncConfig {
@@ -150,16 +167,6 @@ export const setFailSagaCallback = (saga: FailSagaCallback) => {
 };
 
 /**
- * @deprecated This will be removed soon. use [[setFailSagaCallback]], [[setMiddleSagaCallback]], [[setHeaderSelector]] and [[setBaseUrlSelector]] directly instead.
- */
-export const sagaHttpConfiguration = {
-  setBaseUrlSelector,
-  setHeaderSelector,
-  setExecutingMiddlewareGenerator: setMiddleSagaCallback,
-  setFailExecutingGenerator: setFailSagaCallback,
-};
-
-/**
  * Function for helping running async task having status pending, success, fail and cancel
  *
  * @param config
@@ -215,6 +222,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         let payload = null;
         let httpRequests: CallEffect[] = [];
 
+        // Handle http request tasks
         if (_rootAction && _rootAction.http) {
           state = yield select();
 
@@ -247,6 +255,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           );
         }
 
+        // Handle general promise tasks
         if (_config.getPromises) {
           httpRequests = httpRequests.concat(
             _config
@@ -255,34 +264,57 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           );
         }
 
-        const responses = yield all(httpRequests);
+        let responses = null;
 
-        // Find failed response
-        const failResponse = responses.find(
+        if (_config.runInSequence) {
+          responses = [];
+
+          for (let req of httpRequests) {
+            const httpRes = yield req;
+            responses.push(httpRes);
+          }
+        } else {
+          responses = yield all(httpRequests);
+        }
+
+        // Find failed http response
+        const failHttpResponse = responses.find(
           (e: any) =>
-            e.status !== undefined && e.status !== null && e.status !== 200
+            e.json &&
+            e.status !== undefined &&
+            e.status !== null &&
+            e.status !== 200
         );
 
-        if (failResponse && failResponse.json) {
-          const error: any = yield call([failResponse, 'json']);
+        // Handle throwing error exception in case there is failed http response
+        if (failHttpResponse) {
+          const error: any = yield call([failHttpResponse, 'json']);
 
           throw {
             message: error.message || 'Something went wrong!',
-            status: failResponse.status,
+            status: failHttpResponse.status,
           };
         }
 
         const datas = yield all(
-          responses.map((e: any) => (e.json ? call([e, 'json']) : e))
+          responses.map((e: any) =>
+            e.json
+              ? call([e, 'json'])
+              : call(function* (p) {
+                  yield p;
+                }, e)
+          )
         );
 
-        const failData = datas.find(
+        const failDataIndex = datas.findIndex(
           (e: any) =>
             e.success !== undefined && e.success !== null && !e.success
         );
-        if (failData) {
+
+        if (failDataIndex >= 0) {
           throw {
-            message: failData.message,
+            message: datas[failDataIndex].message,
+            status: responses[failDataIndex].status,
           };
         }
 
@@ -290,7 +322,8 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           ? _config.mapResultToPayload(
               state,
               _rootAction,
-              datas.map((e: any) => e.data)
+              datas.map((e: any) => e.data),
+              datas
             )
           : datas.length === 1
           ? datas[0].data
@@ -338,12 +371,6 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 }
 
 /**
- *
- * @deprecated The function will be removed soon. Use [[runAsync]] instead.
- */
-export const runApi = runAsync;
-
-/**
  * Create a saga watcher. It works closely with the function [[createAsyncReducer]] creating a reducer with the same matched prefix action type
  *
  * @param {WatcherConfig} config
@@ -374,12 +401,15 @@ export function createAsyncWatcher(
     mapResultToPayload: null,
     mapActionToPendingPayload: null,
     resetIfCanceled: true,
+    listenOnceAtTime: false,
   }
 ) {
   const { actionPrefix, statuses, ...restConfig } = config;
 
+  const takeTask = config.listenOnceAtTime ? takeLeading : takeLatest;
+
   return function* () {
-    yield takeLatest(actionPrefix, function* (action) {
+    yield takeTask(actionPrefix, function* (action) {
       yield call(
         runAsync,
         {
@@ -398,13 +428,6 @@ export function createAsyncWatcher(
     });
   };
 }
-
-/**
- * Create a saga watcher. It works closely with the function [[createAsyncReducer]] creating a reducer with the same matched prefix action type
- *
- * @deprecated The function will be removed soon. Use [[createAsyncWatcher]] instead.
- */
-export const createAsyncApiWatcher = createAsyncWatcher;
 
 /**
  * Create a saga watcher. It works closely with the function [[createAsyncPagingReducer]] creating a reducer with the same matched prefix action type
@@ -437,6 +460,7 @@ export function createAsyncPagingWatcher(
     mapResultToPayload: null,
     mapActionToPendingPayload: null,
     resetIfCanceled: true,
+    listenOnceAtTime: false,
   }
 ) {
   const {
@@ -445,7 +469,7 @@ export function createAsyncPagingWatcher(
     ...restConfig
   } = config;
 
-  return createAsyncApiWatcher({
+  return createAsyncWatcher({
     ...restConfig,
     mapActionToPendingPayload: (state, action) => {
       let payload: any = {
@@ -459,7 +483,7 @@ export function createAsyncPagingWatcher(
       }
       return payload;
     },
-    mapResultToPayload: (state, action, data) => {
+    mapResultToPayload: (state, action, data, rawData) => {
       let payload: any = {
         firstOffset: action.payload.firstOffset,
       };
@@ -467,7 +491,7 @@ export function createAsyncPagingWatcher(
       if (mapResultToPayload) {
         payload = {
           ...payload,
-          ...mapResultToPayload(state, action, data),
+          ...mapResultToPayload(state, action, data, rawData),
         };
       } else {
         payload.data = data;
@@ -477,10 +501,3 @@ export function createAsyncPagingWatcher(
     },
   });
 }
-
-/**
- * Create a saga watcher. It works closely with the function [[createAsyncPagingReducer]] creating a reducer with the same matched prefix action type
- *
- * @deprecated The function will be removed soon. Use [[createAsyncPagingWatcher]] instead.
- */
-export const createAsyncPagingApiWatcher = createAsyncPagingWatcher;
