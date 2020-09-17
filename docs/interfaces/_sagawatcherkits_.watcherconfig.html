@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>WatcherConfig | Redux Kit - v0.1.16</title>
-	<meta name="description" content="Documentation for Redux Kit - v0.1.16">
+	<title>WatcherConfig | Redux Kit</title>
+	<meta name="description" content="Documentation for Redux Kit">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
 /* ==========================================================================
@@ -2692,7 +2692,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="../index.html">Redux Kit - v0.1.16</a></strong>
+					<strong><a href="../index.html">Redux Kit</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2741,6 +2741,9 @@ img {
 					<a href="_sagawatcherkits_.watcherconfig.html#getpromises" class="tsd-kind-icon">get<wbr>Promises</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a href="_sagawatcherkits_.watcherconfig.html#listenonceattime" class="tsd-kind-icon">listen<wbr>Once<wbr>AtTime</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a href="_sagawatcherkits_.watcherconfig.html#mapactiontopendingpayload" class="tsd-kind-icon">map<wbr>Action<wbr>ToPending<wbr>Payload</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -2748,6 +2751,9 @@ img {
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a href="_sagawatcherkits_.watcherconfig.html#resetifcanceled" class="tsd-kind-icon">reset<wbr>IfCanceled</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a href="_sagawatcherkits_.watcherconfig.html#runinsequence" class="tsd-kind-icon">run<wbr>InSequence</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a href="_sagawatcherkits_.watcherconfig.html#statuses" class="tsd-kind-icon">statuses</a>
@@ -2765,15 +2771,6 @@ img {
 		</li>
 		<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 			<a href="../modules/_sagawatcherkits_.html#promisefunction" class="tsd-kind-icon">Promise<wbr>Function</a>
-		</li>
-		<li class=" tsd-kind-variable tsd-parent-kind-module">
-			<a href="../modules/_sagawatcherkits_.html#createasyncapiwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Api<wbr>Watcher</a>
-		</li>
-		<li class=" tsd-kind-variable tsd-parent-kind-module">
-			<a href="../modules/_sagawatcherkits_.html#createasyncpagingapiwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Paging<wbr>Api<wbr>Watcher</a>
-		</li>
-		<li class=" tsd-kind-variable tsd-parent-kind-module">
-			<a href="../modules/_sagawatcherkits_.html#runapi" class="tsd-kind-icon">run<wbr>Api</a>
 		</li>
 		<li class=" tsd-kind-function tsd-parent-kind-module">
 			<a href="../modules/_sagawatcherkits_.html#createasyncpagingwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Paging<wbr>Watcher</a>
@@ -2795,9 +2792,6 @@ img {
 		</li>
 		<li class=" tsd-kind-function tsd-parent-kind-module">
 			<a href="../modules/_sagawatcherkits_.html#setmiddlesagacallback" class="tsd-kind-icon">set<wbr>Middle<wbr>Saga<wbr>Callback</a>
-		</li>
-		<li class=" tsd-kind-object-literal tsd-parent-kind-module">
-			<a href="../modules/_sagawatcherkits_.html#sagahttpconfiguration" class="tsd-kind-icon">saga<wbr>Http<wbr>Configuration</a>
 		</li>
 	</ul>
 </nav>
@@ -2826,9 +2820,11 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_sagawatcherkits_.watcherconfig.html#actionprefix" class="tsd-kind-icon">action<wbr>Prefix</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#getapi" class="tsd-kind-icon">get<wbr>Api</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#getpromises" class="tsd-kind-icon">get<wbr>Promises</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#listenonceattime" class="tsd-kind-icon">listen<wbr>Once<wbr>AtTime</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#mapactiontopendingpayload" class="tsd-kind-icon">map<wbr>Action<wbr>ToPending<wbr>Payload</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#mapresulttopayload" class="tsd-kind-icon">map<wbr>Result<wbr>ToPayload</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#resetifcanceled" class="tsd-kind-icon">reset<wbr>IfCanceled</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#runinsequence" class="tsd-kind-icon">run<wbr>InSequence</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_sagawatcherkits_.watcherconfig.html#statuses" class="tsd-kind-icon">statuses</a></li>
 						</ul>
 					</section>
@@ -2843,7 +2839,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">action<wbr>Prefix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L77">sagaWatcherKits.tsx:77</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L94">sagaWatcherKits.tsx:94</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2859,7 +2855,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#getapi">getApi</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L47">sagaWatcherKits.tsx:47</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L48">sagaWatcherKits.tsx:48</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2877,9 +2873,26 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#getpromises">getPromises</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L48">sagaWatcherKits.tsx:48</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L49">sagaWatcherKits.tsx:49</a></li>
 					</ul>
 				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="listenonceattime" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> listen<wbr>Once<wbr>AtTime</h3>
+				<div class="tsd-signature tsd-kind-icon">listen<wbr>Once<wbr>AtTime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+				<aside class="tsd-sources">
+					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#listenonceattime">listenOnceAtTime</a></p>
+					<ul>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L82">sagaWatcherKits.tsx:82</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Tell whether or not after spawning a task once, it blocks until spawned saga completes and then starts to listen for a task again.
+						It is a choice of using between <a href="https://redux-saga.js.org/docs/api/">takeLatest</a> and <a href="https://redux-saga.js.org/docs/api/">takeLeading</a> in redux saga</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="mapactiontopendingpayload" class="tsd-anchor"></a>
@@ -2888,7 +2901,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#mapactiontopendingpayload">mapActionToPendingPayload</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L65">sagaWatcherKits.tsx:65</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L71">sagaWatcherKits.tsx:71</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2901,11 +2914,11 @@ img {
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="mapresulttopayload" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> map<wbr>Result<wbr>ToPayload</h3>
-				<div class="tsd-signature tsd-kind-icon">map<wbr>Result<wbr>ToPayload<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, results<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+				<div class="tsd-signature tsd-kind-icon">map<wbr>Result<wbr>ToPayload<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, results<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span>, rawResults<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#mapresulttopayload">mapResultToPayload</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L58">sagaWatcherKits.tsx:58</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L59">sagaWatcherKits.tsx:59</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2922,7 +2935,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#resetifcanceled">resetIfCanceled</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L70">sagaWatcherKits.tsx:70</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L76">sagaWatcherKits.tsx:76</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2933,13 +2946,29 @@ img {
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="runinsequence" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> run<wbr>InSequence</h3>
+				<div class="tsd-signature tsd-kind-icon">run<wbr>InSequence<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+				<aside class="tsd-sources">
+					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#runinsequence">runInSequence</a></p>
+					<ul>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L87">sagaWatcherKits.tsx:87</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Tell if array of promise tasks or http tasks should run in parallel or sequence</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="statuses" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagOptional">Optional</span> statuses</h3>
 				<div class="tsd-signature tsd-kind-icon">statuses<span class="tsd-signature-symbol">:</span> <a href="_sagawatcherkits_.iasyncstatus.html" class="tsd-signature-type">IAsyncStatus</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 				<aside class="tsd-sources">
 					<p>Inherited from <a href="_sagawatcherkits_.iasyncconfig.html">IAsyncConfig</a>.<a href="_sagawatcherkits_.iasyncconfig.html#statuses">statuses</a></p>
 					<ul>
-						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kit/blob/2a5a663/src/sagaWatcherKits.tsx#L53">sagaWatcherKits.tsx:53</a></li>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/45c9bf7/src/sagaWatcherKits.tsx#L54">sagaWatcherKits.tsx:54</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2955,7 +2984,6 @@ img {
 				<div class="tsd-legend-group">
 					<ul class="tsd-legend">
 						<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-						<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 						<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 					</ul>
