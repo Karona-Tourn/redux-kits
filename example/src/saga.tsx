@@ -1,23 +1,17 @@
 import { all } from 'redux-saga/effects';
-import { createAsyncApiWatcher } from 'redux-kits';
+import { createAsyncWatcher } from 'redux-kits';
 import actionType from './actionType';
+import { getUsers } from './api';
 
-const watchFetchUsers = createAsyncApiWatcher({
+const watchFetchUsers = createAsyncWatcher({
   actionPrefix: actionType.FETCH_USERS,
-  getPromises: () => [
-    () =>
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            data: [...Array(20)].map((_, index) => ({
-              id: index + 1,
-              name: `User ${index + 1}`,
-            })),
-          });
-        }, 1000);
-      }),
+  runInSequence: true,
+  listenOnceAtTime: true,
+  getPromises: (state, action) => [
+    () => getUsers({ limit: action.payload.limit }),
   ],
-  mapResultToPayload: (state, action, results) => results[0],
+  mapResultToPayload: (state, action, results, rawResults) =>
+    rawResults[0].results,
 });
 
 export default function* saga() {
