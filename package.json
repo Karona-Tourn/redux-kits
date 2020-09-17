@@ -109,10 +109,12 @@
     "git": {
       "changelog": "git log --pretty=format:\"* %s (%h)\" ${from}...${to}",
       "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
+      "tagName": "v${version}",
+      "requireCleanWorkingDir": false
     },
     "npm": {
-      "publish": true
+      "publish": true,
+      "ignoreVersion": true
     },
     "github": {
       "release": true
