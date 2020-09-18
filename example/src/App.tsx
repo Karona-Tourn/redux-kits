@@ -11,35 +11,48 @@ import {
   StatusBar,
   Image,
   RefreshControl,
+  Alert,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAsyncReducerEffect } from 'redux-kits';
+import { useDispatch } from 'react-redux';
 import { fetchUsers } from './action';
-
-interface RootState {
-  users: any;
-}
 
 export default function App() {
   const [refreshing, setRefreshing] = React.useState(false);
-  const { isLoading, isFailLoading, users } = useSelector(
-    (state: RootState) => ({
-      isLoading: state.users.pending,
-      isFailLoading: state.users.error ? true : false,
-      users: state.users.data ?? [],
-    })
-  );
-
   const dispatch = useDispatch();
 
+  const { isPending, isFail, users } = useAsyncReducerEffect(
+    'users',
+    (_, users: any) => {
+      return {
+        users: users.data,
+      };
+    },
+    (isFail, error) => {
+      if (refreshing) {
+        setRefreshing(false);
+      }
+
+      if (isFail) {
+        Alert.alert('Error', error.message, [
+          {
+            text: 'OK',
+          },
+        ]);
+      }
+    },
+    [refreshing]
+  );
+
   const handleLoad = React.useCallback(() => {
-    if (!isLoading) {
+    if (!isPending) {
       dispatch(
         fetchUsers({
           limit: 100,
         })
       );
     }
-  }, [isLoading, dispatch]);
+  }, [isPending, dispatch]);
 
   const handleRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -50,12 +63,6 @@ export default function App() {
     handleLoad();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  React.useEffect(() => {
-    if (!isLoading && refreshing) {
-      setRefreshing(false);
-    }
-  }, [isLoading, refreshing]);
 
   const renderItem = React.useCallback(({ item }) => {
     return (
@@ -74,11 +81,11 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar translucent={false} />
-      {isLoading && !refreshing ? (
+      {isPending && !refreshing ? (
         <View style={styles.indicatorcontainer}>
           <ActivityIndicator size="large" />
         </View>
-      ) : isFailLoading ? (
+      ) : isFail ? (
         <View style={styles.indicatorcontainer}>
           <Text>Failed loading users</Text>
           <TouchableOpacity style={styles.retryButton} onPress={handleLoad}>

@@ -234,35 +234,48 @@ export class ActionCreator {
     });
   }
 
-  static makeAddLast(actionType: string): ActionCreatorType {
+  static makeAddLast(
+    actionType: string
+  ): (data: PagingData) => IAsyncAction | IAsyncPagingAction {
     return (data: PagingData) => ({
       type: ActionTypeMaker.ADD_LAST(actionType),
       payload: data,
     });
   }
 
-  static makeAddFirst(actionType: string): ActionCreatorType {
+  static makeAddFirst(
+    actionType: string
+  ): (data: PagingData) => IAsyncAction | IAsyncPagingAction {
     return (data: PagingData) => ({
       type: ActionTypeMaker.ADD_FIRST(actionType),
       payload: data,
     });
   }
 
-  static makeRemove(actionType: string): ActionCreatorType {
+  static makeRemove(
+    actionType: string
+  ): (id: number) => IAsyncAction | IAsyncPagingAction {
     return (id: number) => ({
       type: ActionTypeMaker.REMOVE(actionType),
       payload: id,
     });
   }
 
-  static makeUpdate(actionType: string): ActionCreatorType {
+  static makeUpdate(
+    actionType: string
+  ): (data: PagingData) => IAsyncAction | IAsyncPagingAction {
     return (data: PagingData) => ({
-      type: ActionTypeMaker.ADD_LAST(actionType),
+      type: ActionTypeMaker.UPDATE(actionType),
       payload: data,
     });
   }
 
-  static makeReplace(actionType: string): ActionCreatorType {
+  static makeReplace(
+    actionType: string
+  ): (
+    replacingId: number,
+    replacedData: PagingData
+  ) => IAsyncAction | IAsyncPagingAction {
     return (replacingId, replacedData: PagingData) => ({
       type: ActionTypeMaker.REPLACE(actionType),
       payload: {
