@@ -61,6 +61,15 @@ function* watchFetchCart() {
 ```
 
 ```javascript
+import {
+  createAsyncReducer,
+  createAsyncPagingReducer,
+  createAsyncWatcher,
+  createAsyncPagingWatcher,
+  ActionTypeMaker,
+  ActionCreator,
+} from 'redux-kits';
+
 // Now, I wrote the following code
 // Reducer
 const carts = createAsyncReducer('FETCH_CART');
