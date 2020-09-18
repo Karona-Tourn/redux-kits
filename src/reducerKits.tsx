@@ -36,7 +36,7 @@ export interface I_initialAsyncState {
  */
 export interface IAsyncPagingData {
   [index: string]: any;
-  id: any;
+  id?: any;
 }
 
 export interface I_initialAsyncPagingState {
@@ -54,7 +54,7 @@ export interface I_initialAsyncPagingState {
  * @ignore
  */
 export interface IAsyncPagingPayload extends IAsyncPagingData {
-  data: IAsyncPagingData[] | IAsyncPagingData;
+  data?: IAsyncPagingData[] | IAsyncPagingData;
 
   /**
    * If true, it will clear field `data` from reducer matching with `_PENDING` action type
@@ -77,7 +77,7 @@ export interface IAsyncPagingPayload extends IAsyncPagingData {
  */
 export interface IAsyncPagingAction {
   type: string;
-  payload: IAsyncPagingPayload;
+  payload: IAsyncPagingPayload | number;
 }
 
 /**
@@ -369,7 +369,8 @@ export function createAsyncPagingReducer(
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
-          if (action.payload.clear) {
+          const payload = action.payload as IAsyncPagingPayload;
+          if (payload.clear) {
             draftState.data = [];
             draftState.offset = 0;
           }
@@ -378,7 +379,11 @@ export function createAsyncPagingReducer(
         });
       case SUCCESS:
         return produce(state, (draftState) => {
-          const { data, firstOffset, ...rest } = action.payload;
+          const {
+            data,
+            firstOffset,
+            ...rest
+          } = action.payload as IAsyncPagingPayload;
           const newData = data && Array.isArray(data) ? data : [];
           const length = newData.length;
 
@@ -403,18 +408,18 @@ export function createAsyncPagingReducer(
         });
       case ADD_LAST:
         return produce(state, (draftState) => {
-          draftState.data.push(action.payload);
+          draftState.data.push(action.payload as IAsyncPagingPayload);
           draftState.offset += 1;
         });
       case ADD_FIRST:
         return produce(state, (draftState) => {
-          draftState.data.unshift(action.payload);
+          draftState.data.unshift(action.payload as IAsyncPagingPayload);
           draftState.offset += 1;
         });
       case UPDATE:
         return produce(state, (draftState) => {
           if (draftState.data) {
-            const updateData = action.payload;
+            const updateData = action.payload as IAsyncPagingPayload;
             const index = draftState.data.findIndex(
               (e) => e.id === updateData.id
             );
@@ -428,17 +433,18 @@ export function createAsyncPagingReducer(
         });
       case REPLACE:
         return produce(state, (draftState) => {
-          const searchId = action.payload.id;
+          const payload = action.payload as IAsyncPagingPayload;
+          const searchId = payload.id;
           const replaceIndex = draftState.data.findIndex(
             (e) => e.id === searchId
           );
 
           if (
             replaceIndex >= 0 &&
-            action.payload.data &&
-            !Array.isArray(action.payload.data)
+            payload.data &&
+            !Array.isArray(payload.data)
           ) {
-            draftState.data[replaceIndex] = action.payload.data;
+            draftState.data[replaceIndex] = payload.data;
           }
         });
       case REMOVE:
