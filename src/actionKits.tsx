@@ -1,4 +1,6 @@
-const _cachedActionTypes: {
+import { IAsyncAction, IAsyncPagingAction } from './reducerKits';
+
+var _cachedActionTypes: {
   [key: string]: {
     pending?: string;
     success?: string;
@@ -12,6 +14,19 @@ const _cachedActionTypes: {
     replace?: string;
   };
 } = {};
+
+type ActionCreatorType = (
+  ...params: any[]
+) => IAsyncAction | IAsyncPagingAction;
+
+type HttpActionCreatorType = (params: {
+  limit?: number;
+  firstOffset?: boolean;
+  clear?: boolean;
+  [key: string]: any;
+}) => IAsyncAction | IAsyncPagingAction;
+
+type PagingData = { id: any; [key: string]: any };
 
 function getCachedActionType(prefix: string) {
   return _cachedActionTypes[prefix] || (_cachedActionTypes[prefix] = {});
@@ -27,7 +42,7 @@ export function getCachedActionTypes() {
 /**
  * Action type name maker
  */
-export const actionTypeMaker = {
+export class ActionTypeMaker {
   /**
    * Create an action type with `_PENDING` suffix
    *
@@ -40,10 +55,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_PENDING
    * ```
    */
-  PENDING: (prefix: string) => {
+  static PENDING(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.pending || (at.pending = `${prefix}_PENDING`);
-  },
+  }
   /**
    * Create an action type with `_SUCCESS` suffix
    *
@@ -56,10 +71,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_SUCCESS
    * ```
    */
-  SUCCESS: (prefix: string) => {
+  static SUCCESS(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.success || (at.success = `${prefix}_SUCCESS`);
-  },
+  }
   /**
    * Create an action type with `_FAIL` suffix
    *
@@ -72,10 +87,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_FAIL
    * ```
    */
-  FAIL: (prefix: string) => {
+  static FAIL(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.fail || (at.fail = `${prefix}_FAIL`);
-  },
+  }
   /**
    * Create an action type with `_RESET` suffix
    *
@@ -88,10 +103,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_RESET
    * ```
    */
-  RESET: (prefix: string) => {
+  static RESET(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.reset || (at.reset = `${prefix}_RESET`);
-  },
+  }
   /**
    * Create an action type with `_CANCEL` suffix
    *
@@ -104,10 +119,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_CANCEL
    * ```
    */
-  CANCEL: (prefix: string) => {
+  static CANCEL(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.cancel || (at.cancel = `${prefix}_CANCEL`);
-  },
+  }
   /**
    * Create an action type with `_REMOVE` suffix
    *
@@ -120,10 +135,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_REMOVE
    * ```
    */
-  REMOVE: (prefix: string) => {
+  static REMOVE(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.remove || (at.remove = `${prefix}_REMOVE`);
-  },
+  }
   /**
    * Create an action type with `_UPDATE` suffix
    *
@@ -136,10 +151,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_UPDATE
    * ```
    */
-  UPDATE: (prefix: string) => {
+  static UPDATE(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.update || (at.update = `${prefix}_UPDATE`);
-  },
+  }
   /**
    * Create an action type with `_ADD_FIRST` suffix
    *
@@ -152,10 +167,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_ADD_FIRST
    * ```
    */
-  ADD_FIRST: (prefix: string) => {
+  static ADD_FIRST(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.addFirst || (at.addFirst = `${prefix}_ADD_FIRST`);
-  },
+  }
   /**
    * Create an action type with `_ADD_LAST` suffix
    *
@@ -168,10 +183,10 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_ADD_LAST
    * ```
    */
-  ADD_LAST: (prefix: string) => {
+  static ADD_LAST(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.addLast || (at.addLast = `${prefix}_ADD_LAST`);
-  },
+  }
   /**
    * Create an action type with `_REPLACE` suffix
    *
@@ -184,8 +199,81 @@ export const actionTypeMaker = {
    * console.log(type); // FETCH_PROFILE_REPLACE
    * ```
    */
-  REPLACE: (prefix: string) => {
+  static REPLACE(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.replace || (at.replace = `${prefix}_REPLACE`);
-  },
-};
+  }
+}
+
+export class ActionCreator {
+  static makeHttpPagingFetch(actionType: string): HttpActionCreatorType {
+    return (
+      params: {
+        limit?: number;
+        firstOffset?: boolean;
+        clear?: boolean;
+        [key: string]: any;
+      } = {}
+    ) => ({
+      type: actionType,
+      payload: {
+        ...params,
+      },
+    });
+  }
+
+  static makeReset(actionType: string): ActionCreatorType {
+    return () => ({
+      type: ActionTypeMaker.RESET(actionType),
+    });
+  }
+
+  static makeCancel(actionType: string): ActionCreatorType {
+    return () => ({
+      type: ActionTypeMaker.CANCEL(actionType),
+    });
+  }
+
+  static makeAddLast(actionType: string): ActionCreatorType {
+    return (data: PagingData) => ({
+      type: ActionTypeMaker.ADD_LAST(actionType),
+      payload: data,
+    });
+  }
+
+  static makeAddFirst(actionType: string): ActionCreatorType {
+    return (data: PagingData) => ({
+      type: ActionTypeMaker.ADD_FIRST(actionType),
+      payload: data,
+    });
+  }
+
+  static makeRemove(actionType: string): ActionCreatorType {
+    return (id: number) => ({
+      type: ActionTypeMaker.REMOVE(actionType),
+      payload: id,
+    });
+  }
+
+  static makeUpdate(actionType: string): ActionCreatorType {
+    return (data: PagingData) => ({
+      type: ActionTypeMaker.ADD_LAST(actionType),
+      payload: data,
+    });
+  }
+
+  static makeReplace(actionType: string): ActionCreatorType {
+    return (replacingId, replacedData: PagingData) => ({
+      type: ActionTypeMaker.REPLACE(actionType),
+      payload: {
+        id: replacingId,
+        data: replacedData,
+      },
+    });
+  }
+}
+
+/**
+ * @deprecated Use [[ActionTypeMaker]] instead.
+ */
+export const actionTypeMaker = ActionTypeMaker;
