@@ -12,7 +12,7 @@ import {
   takeLeading,
 } from 'redux-saga/effects';
 import qs from 'qs';
-import { actionTypeMaker } from './actionKits';
+import { ActionTypeMaker } from './actionKits';
 import { IAsyncAction } from './reducerKits';
 
 /**
@@ -178,16 +178,16 @@ export const setFailSagaCallback = (saga: FailSagaCallback) => {
  *  const task = yield fork(runAsync, {
  *    getPromises: () => [() => api.fetchCart()],
  *    statuses: {
- *      pending: actionTypeMaker.PENDING('FETCH_CART'),
- *      success: actionTypeMaker.SUCCESS('FETCH_CART'),
- *      fail: actionTypeMaker.FAIL('FETCH_CART'),
- *      reset: actionTypeMaker.RESET('FETCH_CART'),
- *      cancel: actionTypeMaker.CANCEL('FETCH_CART'),
+ *      pending: ActionTypeMaker.PENDING('FETCH_CART'),
+ *      success: ActionTypeMaker.SUCCESS('FETCH_CART'),
+ *      fail: ActionTypeMaker.FAIL('FETCH_CART'),
+ *      reset: ActionTypeMaker.RESET('FETCH_CART'),
+ *      cancel: ActionTypeMaker.CANCEL('FETCH_CART'),
  *    }
  *   });
  *
  *  // Wait if success or fail
- *  yield take([actionTypeMaker.SUCCESS('FETCH_CART'), actionTypeMaker.FAIL('FETCH_CART')])
+ *  yield take([ActionTypeMaker.SUCCESS('FETCH_CART'), ActionTypeMaker.FAIL('FETCH_CART')])
  * }
  * ```
  */
@@ -415,11 +415,11 @@ export function createAsyncWatcher(
         {
           ...restConfig,
           statuses: {
-            pending: actionTypeMaker.PENDING(actionPrefix),
-            success: actionTypeMaker.SUCCESS(actionPrefix),
-            fail: actionTypeMaker.FAIL(actionPrefix),
-            cancel: actionTypeMaker.CANCEL(actionPrefix),
-            reset: actionTypeMaker.RESET(actionPrefix),
+            pending: ActionTypeMaker.PENDING(actionPrefix),
+            success: ActionTypeMaker.SUCCESS(actionPrefix),
+            fail: ActionTypeMaker.FAIL(actionPrefix),
+            cancel: ActionTypeMaker.CANCEL(actionPrefix),
+            reset: ActionTypeMaker.RESET(actionPrefix),
             ...(statuses || {}),
           },
         },
@@ -473,8 +473,12 @@ export function createAsyncPagingWatcher(
     ...restConfig,
     mapActionToPendingPayload: (state, action) => {
       let payload: any = {
-        cleanPrevious: action.payload.cleanPrevious,
+        clear: action.payload.cleanPrevious ?? action.payload.clear,
+        firstOffset: action.payload.firstOffset ?? true,
       };
+
+      payload.clear = payload.clear ?? false;
+
       if (mapActionToPendingPayload) {
         payload = {
           ...payload,
@@ -485,7 +489,7 @@ export function createAsyncPagingWatcher(
     },
     mapResultToPayload: (state, action, data, rawData) => {
       let payload: any = {
-        firstOffset: action.payload.firstOffset,
+        firstOffset: action.payload.firstOffset ?? true,
       };
 
       if (mapResultToPayload) {

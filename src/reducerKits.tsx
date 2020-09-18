@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { actionTypeMaker } from './actionKits';
+import { ActionTypeMaker } from './actionKits';
 
 /**
  * Redux action
@@ -59,12 +59,17 @@ export interface IAsyncPagingPayload extends IAsyncPagingData {
   /**
    * If true, it will clear field `data` from reducer matching with `_PENDING` action type
    */
-  cleanPrevious: boolean;
+  clear?: boolean;
+
+  /**
+   * @deprecated Use [[clear]] instead
+   */
+  cleanPrevious?: boolean;
 
   /**
    * If true, field `offset` in the reducer state will be reset to 0
    */
-  firstOffset: boolean;
+  firstOffset?: boolean;
 }
 
 /**
@@ -267,10 +272,10 @@ export function createAsyncReducer(
     error: null,
   }
 ) {
-  const PENDING = actionTypeMaker.PENDING(actionTypePrefix);
-  const SUCCESS = actionTypeMaker.SUCCESS(actionTypePrefix);
-  const FAIL = actionTypeMaker.FAIL(actionTypePrefix);
-  const RESET = actionTypeMaker.RESET(actionTypePrefix);
+  const PENDING = ActionTypeMaker.PENDING(actionTypePrefix);
+  const SUCCESS = ActionTypeMaker.SUCCESS(actionTypePrefix);
+  const FAIL = ActionTypeMaker.FAIL(actionTypePrefix);
+  const RESET = ActionTypeMaker.RESET(actionTypePrefix);
 
   return function (state = initialState, action: IAsyncAction) {
     switch (action.type) {
@@ -350,21 +355,21 @@ export function createAsyncPagingReducer(
     hasMore: true,
   }
 ) {
-  const PENDING = actionTypeMaker.PENDING(actionTypePrefix);
-  const SUCCESS = actionTypeMaker.SUCCESS(actionTypePrefix);
-  const FAIL = actionTypeMaker.FAIL(actionTypePrefix);
-  const RESET = actionTypeMaker.RESET(actionTypePrefix);
-  const UPDATE = actionTypeMaker.UPDATE(actionTypePrefix);
-  const ADD_LAST = actionTypeMaker.ADD_LAST(actionTypePrefix);
-  const ADD_FIRST = actionTypeMaker.ADD_FIRST(actionTypePrefix);
-  const REPLACE = actionTypeMaker.REPLACE(actionTypePrefix);
-  const REMOVE = actionTypeMaker.REMOVE(actionTypePrefix);
+  const PENDING = ActionTypeMaker.PENDING(actionTypePrefix);
+  const SUCCESS = ActionTypeMaker.SUCCESS(actionTypePrefix);
+  const FAIL = ActionTypeMaker.FAIL(actionTypePrefix);
+  const RESET = ActionTypeMaker.RESET(actionTypePrefix);
+  const UPDATE = ActionTypeMaker.UPDATE(actionTypePrefix);
+  const ADD_LAST = ActionTypeMaker.ADD_LAST(actionTypePrefix);
+  const ADD_FIRST = ActionTypeMaker.ADD_FIRST(actionTypePrefix);
+  const REPLACE = ActionTypeMaker.REPLACE(actionTypePrefix);
+  const REMOVE = ActionTypeMaker.REMOVE(actionTypePrefix);
 
   return function (state = initialState, action: IAsyncPagingAction) {
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
-          if (action.payload.cleanPrevious) {
+          if (action.payload.clear) {
             draftState.data = [];
             draftState.offset = 0;
           }
