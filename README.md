@@ -76,22 +76,22 @@ const watchFetchCart = createAsyncWatcher({
 // More advance code working with pagination
 
 // Actions
-const fetchCart = ({ firstOffset, limit, cleanPrevious }) => ({
+const fetchCart = ({ firstOffset, limit, clear }) => ({
   type: 'FETCH_CART',
   payload: {
     firstOffset,
     limit,
-    cleanPrevious,
+    clear,
   },
 });
 
 const removeCart = (id) => ({
-  type: actionTypeMaker.REMOVE('FETCH_CART'),
+  type: ActionTypeMaker.REMOVE('FETCH_CART'),
   payload: id,
 });
 
 const addCart = ({ id, itemName }) => ({
-  type: actionTypeMaker.ADD_LAST('FETCH_CART'),
+  type: ActionTypeMaker.ADD_LAST('FETCH_CART'),
   payload: {
     id,
     itemName,
@@ -99,7 +99,7 @@ const addCart = ({ id, itemName }) => ({
 });
 
 const clearCart = () => ({
-  type: actionTypeMaker.RESET('FETCH_CART'),
+  type: ActionTypeMaker.RESET('FETCH_CART'),
 });
 
 // Reducer
