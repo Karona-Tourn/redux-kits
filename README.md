@@ -1,8 +1,8 @@
 # redux-kits
 
-Sorry the lack of the documents because this package is target for my personal usage. In case you found it is useful for you, so it can be a right one for you.
+Support you working with async work in Redux. This relies on Redux Saga.
 
-You also need to install [redux-saga](https://redux-saga.js.org).
+You also need to install [redux](https://redux.js.org/introduction/installation#redux-core), [react-redux](https://react-redux.js.org/introduction/quick-start) and [redux-saga](https://redux-saga.js.org).
 
 Document [here](https://karona-tourn.github.io/redux-kits)
 
