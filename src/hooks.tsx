@@ -36,7 +36,6 @@ export function usePrevious(value: any, defaultValue: any = undefined) {
   return ref.current;
 }
 
-// = unknown
 export function useAsyncReducerEffect<
   TSelected extends TAsyncSelected<TSelected>,
   TState = DefaultRootState
