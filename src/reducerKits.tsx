@@ -17,7 +17,7 @@ export interface IAsyncAction {
 /**
  * Initial async reducerstate
  */
-export interface I_initialAsyncState {
+export interface IAsyncState {
   data: any;
 
   /**
@@ -39,7 +39,7 @@ export interface IAsyncPagingData {
   id?: any;
 }
 
-export interface I_initialAsyncPagingState {
+export interface IAsyncPagingState {
   [index: string]: any;
   data: IAsyncPagingData[];
   offset: number;
@@ -97,6 +97,20 @@ export interface IReducerBatchInit {
 export interface IReducerBatch {
   [key: string]: (state: any, action: IAsyncAction) => any;
 }
+
+var defaultAsyncState: IAsyncState = {
+  data: null,
+  pending: false,
+  error: null,
+};
+
+var defaultAsyncPagingState: IAsyncPagingState = {
+  data: [],
+  offset: 0,
+  pending: false,
+  error: null,
+  hasMore: true,
+};
 
 /**
  * Create a batch of reducer object that each property representing nested reducers
@@ -266,18 +280,19 @@ export function createReducerGroup(
  */
 export function createAsyncReducer(
   actionTypePrefix: string,
-  initialState: I_initialAsyncState = {
-    data: null,
-    pending: false,
-    error: null,
-  }
+  initialState: IAsyncState = defaultAsyncState
 ) {
+  const defaultState = {
+    ...defaultAsyncState,
+    ...initialState,
+  };
+
   const PENDING = ActionTypeMaker.PENDING(actionTypePrefix);
   const SUCCESS = ActionTypeMaker.SUCCESS(actionTypePrefix);
   const FAIL = ActionTypeMaker.FAIL(actionTypePrefix);
   const RESET = ActionTypeMaker.RESET(actionTypePrefix);
 
-  return function (state = initialState, action: IAsyncAction) {
+  return function (state = defaultState, action: IAsyncAction) {
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
@@ -295,11 +310,50 @@ export function createAsyncReducer(
           draftState.pending = false;
         });
       case RESET:
-        return produce(initialState, () => {});
+        return produce(defaultState, () => {});
       default:
         return state;
     }
   };
+}
+
+type AsyncReducerGroup = {
+  [key: string]: (state: IAsyncState, action: IAsyncAction) => IAsyncState;
+};
+
+/**
+ * Help creating async reducers with less lines of code
+ *
+ * @param {object} nameTypePairs instance object that its properties representing reducer names and the property values representing action types
+ *
+ * @returns instance of object that its properies points to created async reducers
+ *
+ * Example
+ * ```js
+ * const product = createAsyncReducerGroup({
+ * productList: 'FETCH_PRODUCTS',
+ * productDetail: ['FETCH_PRODUCT_DETAIL', { data: {} }], // set initial state with instance object for property data
+ * cartList: 'FETCH_CARTS',
+ * });
+ *
+ * const reducers = combineReducers({
+ * ...product,
+ * });
+ * ```
+ */
+export function createAsyncReducerGroup(nameTypePairs: {
+  [key: string]: string | [string, IAsyncState];
+}): AsyncReducerGroup {
+  const group: AsyncReducerGroup = {};
+
+  Object.entries(nameTypePairs).forEach((nt) => {
+    group[nt[0]] =
+      typeof nt[1] === 'string'
+        ? createAsyncReducer(nt[1])
+        : createAsyncReducer(...nt[1]);
+  });
+
+  return group;
 }
 
 /**
@@ -347,14 +401,13 @@ export function createAsyncReducer(
  */
 export function createAsyncPagingReducer(
   actionTypePrefix: string,
-  initialState: I_initialAsyncPagingState = {
-    data: [],
-    offset: 0,
-    pending: false,
-    error: null,
-    hasMore: true,
-  }
+  initialState: IAsyncPagingState = defaultAsyncPagingState
 ) {
+  const defaultState = {
+    ...defaultAsyncPagingState,
+    ...initialState,
+  };
+
   const PENDING = ActionTypeMaker.PENDING(actionTypePrefix);
   const SUCCESS = ActionTypeMaker.SUCCESS(actionTypePrefix);
   const FAIL = ActionTypeMaker.FAIL(actionTypePrefix);
@@ -365,7 +418,7 @@ export function createAsyncPagingReducer(
   const REPLACE = ActionTypeMaker.REPLACE(actionTypePrefix);
   const REMOVE = ActionTypeMaker.REMOVE(actionTypePrefix);
 
-  return function (state = initialState, action: IAsyncPagingAction) {
+  return function (state = defaultState, action: IAsyncPagingAction) {
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
@@ -462,9 +515,50 @@ export function createAsyncPagingReducer(
           draftState.pending = false;
         });
       case RESET:
-        return produce(initialState, () => {});
+        return produce(defaultState, () => {});
       default:
         return state;
     }
   };
+}
+
+type AsyncPagingReducerGroup = {
+  [key: string]: (
+    state: IAsyncPagingState,
+    action: IAsyncPagingAction
+  ) => IAsyncPagingState;
+};
+
+/**
+ * Help creating async paging reducers with less lines of code
+ *
+ * @param {object} nameTypePairs instance object that its properties representing reducer names and the property values representing action types
+ *
+ * @returns instance of object that its properies points to created async reducers
+ *
+ * Example
+ * ```js
+ * const product = createAsyncReducerGroup({
+ * productList: ['FETCH_PRODUCTS', { data: [] }], // set initial state with empty array for property data
+ * cartList: 'FETCH_CARTS',
+ * });
+ *
+ * const reducers = combineReducers({
+ * ...product,
+ * });
+ * ```
+ */
+export function createAsyncPagingReducerGroup(nameTypePairs: {
+  [key: string]: string | [string, IAsyncPagingState];
+}): AsyncPagingReducerGroup {
+  const group: AsyncPagingReducerGroup = {};
+
+  Object.entries(nameTypePairs).forEach((nt) => {
+    group[nt[0]] =
+      typeof nt[1] === 'string'
+        ? createAsyncPagingReducer(nt[1])
+        : createAsyncPagingReducer(...nt[1]);
+  });
+
+  return group;
 }
