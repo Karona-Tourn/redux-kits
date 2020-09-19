@@ -53,8 +53,8 @@
 			<a href="#redux-kits" id="redux-kits" style="color: inherit; text-decoration: none;">
 				<h1>redux-kits</h1>
 			</a>
-			<p>Sorry the lack of the documents because this package is target for my personal usage. In case you found it is useful for you, so it can be a right one for you.</p>
-			<p>You also need to install <a href="https://redux-saga.js.org">redux-saga</a>.</p>
+			<p>Support you working with async work in Redux. This relies on Redux Saga.</p>
+			<p>You also need to install <a href="https://redux.js.org/introduction/installation#redux-core">redux</a>, <a href="https://react-redux.js.org/introduction/quick-start">react-redux</a> and <a href="https://redux-saga.js.org">redux-saga</a>.</p>
 			<p>Document <a href="https://karona-tourn.github.io/redux-kits">here</a></p>
 			<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 				<h2>Installation</h2>
@@ -109,13 +109,33 @@
 } <span class="hljs-keyword">from</span> <span class="hljs-string">'redux-kits'</span>;
 
 <span class="hljs-comment">// Now, I wrote the following code</span>
+<span class="hljs-comment">// Actions</span>
+<span class="hljs-keyword">const</span> fetchCart = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART'</span>,
+});
+
 <span class="hljs-comment">// Reducer</span>
 <span class="hljs-keyword">const</span> carts = createAsyncReducer(<span class="hljs-string">'FETCH_CART'</span>);
 
 <span class="hljs-comment">// Saga</span>
 <span class="hljs-keyword">const</span> watchFetchCart = createAsyncWatcher({
   <span class="hljs-attr">actionPrefix</span>: <span class="hljs-string">'FETCH_CART'</span>,
-  <span class="hljs-attr">getPromises</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> [<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> fetch(<span class="hljs-string">'fetch cart url'</span>)],
+  <span class="hljs-attr">getPromises</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> [<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> fetch(<span class="hljs-string">'fetch_cart_url'</span>)],
+});
+
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> you use like this too with redux-kits. But there will be changes you need to update with action creator and watcher.</span>
+<span class="hljs-keyword">const</span> fetchCart = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'FETCH_CART'</span>,
+  <span class="hljs-attr">http</span>: [
+    {
+      <span class="hljs-attr">url</span>: <span class="hljs-string">'fetch_cart_url'</span>,
+      <span class="hljs-attr">method</span>: <span class="hljs-string">'GET'</span>,
+    },
+  ],
+});
+
+<span class="hljs-keyword">const</span> watchFetchCart = createAsyncWatcher({
+  <span class="hljs-attr">actionPrefix</span>: <span class="hljs-string">'FETCH_CART'</span>,
 });</code></pre>
 			<pre><code class="language-javascript"><span class="hljs-comment">// More advance code working with pagination</span>
 
