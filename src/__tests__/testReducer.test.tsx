@@ -3,6 +3,8 @@ import {
   createAsyncPagingReducer,
   createAsyncReducer,
   createReducerBatch,
+  createAsyncReducerGroup,
+  createAsyncPagingReducerGroup,
 } from '../reducerKits';
 
 describe('Test createAsyncReducer', () => {
@@ -264,4 +266,24 @@ it('Test createReducerBatch', () => {
 
   expect(reducer.volume(1.0, { type: 'SET_VOLUME', payload: 0.5 })).toBe(0.5);
   expect(reducer.mute(false, { type: 'SET_MUTE', payload: true })).toBeTruthy();
+});
+
+it('Test createAsyncReducerGroup', () => {
+  const reducer = createAsyncReducerGroup({
+    profile: 'FETCH_PROFILE',
+    news: 'FETCH_NEWS',
+  });
+
+  expect(reducer).toHaveProperty('profile');
+  expect(reducer).toHaveProperty('news');
+});
+
+it('Test createAsyncPagingReducerGroup', () => {
+  const reducer = createAsyncPagingReducerGroup({
+    profile: 'FETCH_PROFILE',
+    news: 'FETCH_NEWS',
+  });
+
+  expect(reducer).toHaveProperty('profile');
+  expect(reducer).toHaveProperty('news');
 });
