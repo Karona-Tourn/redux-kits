@@ -71,13 +71,33 @@ import {
 } from 'redux-kits';
 
 // Now, I wrote the following code
+// Actions
+const fetchCart = () => ({
+  type: 'FETCH_CART',
+});
+
 // Reducer
 const carts = createAsyncReducer('FETCH_CART');
 
 // Saga
 const watchFetchCart = createAsyncWatcher({
   actionPrefix: 'FETCH_CART',
-  getPromises: () => [() => fetch('fetch cart url')],
+  getPromises: () => [() => fetch('fetch_cart_url')],
+});
+
+// NOTE: you use like this too with redux-kits. But there will be changes you need to update with action creator and watcher.
+const fetchCart = () => ({
+  type: 'FETCH_CART',
+  http: [
+    {
+      url: 'fetch_cart_url',
+      method: 'GET',
+    },
+  ],
+});
+
+const watchFetchCart = createAsyncWatcher({
+  actionPrefix: 'FETCH_CART',
 });
 ```
 
