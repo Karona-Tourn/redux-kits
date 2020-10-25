@@ -60,7 +60,9 @@ export default function App() {
   }, [handleLoad]);
 
   React.useEffect(() => {
-    handleLoad();
+    requestAnimationFrame(() => {
+      handleLoad();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
