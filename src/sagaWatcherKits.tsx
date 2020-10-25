@@ -42,10 +42,6 @@ export interface IAsyncStatus {
 export type PromiseFunction = () => Promise<any>;
 
 export interface IAsyncConfig {
-  /**
-   * @deprecated Use [[getPromises]] instead
-   */
-  getApi?: ((state: any, action: any) => PromiseFunction[]) | null;
   getPromises?: ((state: any, action: any) => PromiseFunction[]) | null;
 
   /**
@@ -192,10 +188,6 @@ export const setFailSagaCallback = (saga: FailSagaCallback) => {
  * ```
  */
 export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
-  if (!config.getPromises) {
-    config.getPromises = config.getApi;
-  }
-
   const task = yield fork(
     function* (_config, _rootAction) {
       try {
@@ -395,7 +387,6 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 export function createAsyncWatcher(
   config: WatcherConfig = {
     actionPrefix: '',
-    getApi: null,
     getPromises: null,
     statuses: null,
     mapResultToPayload: null,
@@ -454,7 +445,6 @@ export function createAsyncWatcher(
 export function createAsyncPagingWatcher(
   config: WatcherConfig = {
     actionPrefix: '',
-    getApi: null,
     getPromises: null,
     statuses: null,
     mapResultToPayload: null,

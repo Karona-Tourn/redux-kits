@@ -285,8 +285,3 @@ export class ActionCreator {
     });
   }
 }
-
-/**
- * @deprecated Use [[ActionTypeMaker]] instead.
- */
-export const actionTypeMaker = ActionTypeMaker;
