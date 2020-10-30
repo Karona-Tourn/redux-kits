@@ -43,7 +43,7 @@ export interface IConfig {
     | null;
 }
 
-var _config: IConfig = {
+var _defaultConfig: IConfig = {
   baseUrlSelector: null,
   httpHeaderSelector: null,
   middleSagaCallback: null,
@@ -52,14 +52,13 @@ var _config: IConfig = {
   transformHttpRequestOption: null,
 };
 
+var _config: IConfig = {
+  ..._defaultConfig,
+};
+
 export function configure(config: IConfig): IConfig {
-  var _config: IConfig = {
-    baseUrlSelector: null,
-    httpHeaderSelector: null,
-    middleSagaCallback: null,
-    failSagaCallback: null,
-    customFetch: null,
-    transformHttpRequestOption: null,
+  _config = {
+    ..._defaultConfig,
     ...config,
   };
 

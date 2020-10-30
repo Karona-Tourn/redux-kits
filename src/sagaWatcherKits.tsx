@@ -226,7 +226,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
           httpRequests = httpRequests.concat(
             _rootAction.http.map((http: HttpPayload) => {
-              const { url, params, headers, body, ...rest } = http;
+              let { url, params, headers, body, method, ...rest } = http;
               const hasFormData = body instanceof FormData;
 
               let query = '';
@@ -245,41 +245,46 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
                     _rootAction,
                     http
                   )
-                : {};
+                : ({} as Headers);
 
               const transformHttpRequestOptions = getConfig()
                 .transformHttpRequestOption;
+
+              // Get fetch function for http request
               const f = getConfig().customFetch ?? fetch;
 
-              return call(
-                f,
-                `${baseUrl}${url}${query}`,
-                transformHttpRequestOptions
-                  ? transformHttpRequestOptions(
-                      _config as WatcherConfig,
-                      state,
-                      {
-                        headers: {
-                          ...baseHeaders,
-                          ...headers,
-                        },
-                        ...rest,
-                        body,
-                      }
-                    )
-                  : {
-                      headers: {
-                        ...baseHeaders,
-                        ...headers,
-                      },
-                      ...rest,
-                      body: !body
-                        ? {}
-                        : typeof body === 'string' || hasFormData
-                        ? body
-                        : JSON.stringify(body),
+              url = `${baseUrl}${url}${query}`;
+
+              let reqInit: RequestInit = {
+                headers: headers
+                  ? {
+                      ...baseHeaders,
+                      ...headers,
                     }
-              );
+                  : baseHeaders,
+                method,
+                ...rest,
+              };
+
+              if (transformHttpRequestOptions) {
+                reqInit.body = body;
+                reqInit = transformHttpRequestOptions(
+                  _config as WatcherConfig,
+                  state,
+                  reqInit
+                );
+              } else {
+                reqInit.body =
+                  method == 'GET'
+                    ? undefined
+                    : !body
+                    ? {}
+                    : typeof body === 'string' || hasFormData
+                    ? body
+                    : JSON.stringify(body);
+              }
+
+              return call(f, url, reqInit);
             })
           );
         }
