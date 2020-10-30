@@ -1,18 +1,10 @@
 import produce from 'immer';
-import { ActionTypeMaker } from './actionKits';
-
-/**
- * Redux action
- *
- * @ignore
- */
-export interface IAsyncAction {
-  /**
-   * Type of action.
-   */
-  type: string;
-  payload?: any;
-}
+import {
+  ActionTypeMaker,
+  IAsyncAction,
+  IAsyncPagingAction,
+  IAsyncPagingPayload,
+} from './actionKits';
 
 /**
  * Initial async reducerstate
@@ -46,38 +38,6 @@ export interface IAsyncPagingState {
   pending: boolean;
   error: any;
   hasMore: boolean;
-}
-
-/**
- * Interface for action payload that will be used for [[createAsyncPagingWatcher]] and [[createAsyncPagingReducer]]
- *
- * @ignore
- */
-export interface IAsyncPagingPayload extends IAsyncPagingData {
-  data?: IAsyncPagingData[] | IAsyncPagingData;
-
-  /**
-   * If true, it will clear field `data` from reducer matching with `_PENDING` action type
-   */
-  clear?: boolean;
-
-  /**
-   * @deprecated Use [[clear]] instead
-   */
-  cleanPrevious?: boolean;
-
-  /**
-   * If true, field `offset` in the reducer state will be reset to 0
-   */
-  firstOffset?: boolean;
-}
-
-/**
- * @ignore
- */
-export interface IAsyncPagingAction {
-  type: string;
-  payload: IAsyncPagingPayload | number;
 }
 
 /**
