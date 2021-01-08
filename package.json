@@ -98,7 +98,8 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "no-shadow": "off"
     }
   },
   "eslintIgnore": [

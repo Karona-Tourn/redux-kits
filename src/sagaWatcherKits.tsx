@@ -186,7 +186,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         let state = yield select();
 
         if (_config?.statuses?.pending) {
-          if (!!_config.mapActionToPendingPayload) {
+          if (_config.mapActionToPendingPayload) {
             yield put({
               type: _config.statuses.pending,
               payload: _config.mapActionToPendingPayload(state, _rootAction),
@@ -202,7 +202,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           getConfig().middleSagaCallback ?? _middleSagaCallback;
 
         // Execute generator function middleware
-        if (!!middleSagaCallback) {
+        if (middleSagaCallback) {
           yield call(
             middleSagaCallback,
             _config as WatcherConfig,
@@ -215,7 +215,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         let httpRequests: CallEffect[] = [];
 
         // Handle http request tasks
-        if (!!_rootAction && _rootAction.http) {
+        if (_rootAction && _rootAction.http) {
           state = yield select();
 
           const baseUrlSelector =
@@ -232,7 +232,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
               let query = '';
 
-              if (!!params) {
+              if (params) {
                 query = `?${qs.stringify(params)}`;
               }
 
@@ -267,7 +267,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
                 ...rest,
               };
 
-              if (!!transformHttpRequestOptions) {
+              if (transformHttpRequestOptions) {
                 reqInit.body = body as any;
 
                 reqInit =
@@ -278,7 +278,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
                   ) ?? reqInit;
               } else {
                 reqInit.body =
-                  method == 'GET'
+                  method === 'GET'
                     ? null
                     : !body
                     ? ''
@@ -293,7 +293,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         }
 
         // Handle general promise tasks
-        if (!!_config.getPromises) {
+        if (_config.getPromises) {
           httpRequests = httpRequests.concat(
             _config
               .getPromises(state, _rootAction)
@@ -323,7 +323,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         );
 
         // Handle throwing error exception in case there is failed http response
-        if (!!failHttpResponse) {
+        if (failHttpResponse) {
           let error: any = null;
 
           if (isHttpJsonResponse(failHttpResponse)) {
@@ -340,10 +340,10 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
         const datas = yield all(
           responses.map((e: any) => {
-            if (!!e.headers) {
+            if (e.headers) {
               if (isHttpJsonResponse(e)) {
                 return call([e, 'json']);
-              } else if (!!e.text) {
+              } else if (e.text) {
                 return call([e, 'text']);
               }
             }
@@ -413,7 +413,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
   const failSagaCallback = getConfig().failSagaCallback ?? _failSagaCallback;
 
-  if (!!failSagaCallback) {
+  if (failSagaCallback) {
     if (action.type === config?.statuses?.fail) {
       yield call(failSagaCallback, config, action);
     }
@@ -527,7 +527,7 @@ export function createAsyncPagingWatcher(
 
       payload.clear = payload.clear ?? false;
 
-      if (!!mapActionToPendingPayload) {
+      if (mapActionToPendingPayload) {
         payload = {
           ...payload,
           ...mapActionToPendingPayload(state, action),
@@ -540,7 +540,7 @@ export function createAsyncPagingWatcher(
         firstOffset: action.payload.firstOffset ?? true,
       };
 
-      if (!!mapResultToPayload) {
+      if (mapResultToPayload) {
         payload = {
           ...payload,
           ...mapResultToPayload(state, action, data, rawData),
