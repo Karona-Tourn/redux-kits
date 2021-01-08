@@ -10,16 +10,16 @@ import {
   SafeAreaView,
   StatusBar,
   Image,
-  RefreshControl,
   Alert,
 } from 'react-native';
 import { useAsyncReducerEffect } from 'redux-kits';
 import { useDispatch } from 'react-redux';
-import { fetchUsers } from './action';
+import { fetchUsers, fetchRandomUsers } from './action';
+import { useState } from 'react';
 
 export default function App() {
-  const [refreshing, setRefreshing] = React.useState(false);
   const dispatch = useDispatch();
+  const [is100UserLoad, setIs100UserLoad] = useState(false);
 
   const { isPending, isFail, users } = useAsyncReducerEffect(
     'users',
@@ -29,23 +29,39 @@ export default function App() {
       };
     },
     (isFail, error) => {
-      if (refreshing) {
-        setRefreshing(false);
-      }
-
       if (isFail) {
-        Alert.alert('Error', error.message, [
+        Alert.alert('Error', error?.message ?? '', [
           {
             text: 'OK',
           },
         ]);
       }
     },
-    [refreshing]
+    []
+  );
+
+  const { randomUsers } = useAsyncReducerEffect(
+    'randomUsers',
+    (_, users: any) => {
+      return {
+        randomUsers: users.data,
+      };
+    },
+    (isFail, error) => {
+      if (isFail) {
+        Alert.alert('Error', error?.message ?? '', [
+          {
+            text: 'OK',
+          },
+        ]);
+      }
+    },
+    []
   );
 
   const handleLoad = React.useCallback(() => {
     if (!isPending) {
+      setIs100UserLoad(false);
       dispatch(
         fetchUsers({
           limit: 100,
@@ -54,10 +70,16 @@ export default function App() {
     }
   }, [isPending, dispatch]);
 
-  const handleRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    handleLoad();
-  }, [handleLoad]);
+  const handleLoad100Users = React.useCallback(() => {
+    if (!isPending) {
+      setIs100UserLoad(true);
+      dispatch(
+        fetchRandomUsers({
+          limit: 100,
+        })
+      );
+    }
+  }, [isPending, dispatch]);
 
   React.useEffect(() => {
     requestAnimationFrame(() => {
@@ -83,7 +105,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar translucent={false} />
-      {isPending && !refreshing ? (
+      {isPending ? (
         <View style={styles.indicatorcontainer}>
           <ActivityIndicator size="large" />
         </View>
@@ -97,16 +119,15 @@ export default function App() {
       ) : (
         <FlatList
           style={styles.list}
-          data={users}
+          data={is100UserLoad ? randomUsers : users}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }
           showsVerticalScrollIndicator={false}
         />
       )}
+
       <Button title="Load Users" onPress={handleLoad} />
+      <Button title="Load 100 Users" onPress={handleLoad100Users} />
     </SafeAreaView>
   );
 }

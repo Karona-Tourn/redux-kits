@@ -1,7 +1,13 @@
 import { all } from 'redux-saga/effects';
-import { createAsyncWatcher } from 'redux-kits';
+import { configure, createAsyncWatcher } from 'redux-kits';
 import actionType from './actionType';
 import { getUsers } from './api';
+
+configure({
+  customFetch: (input: RequestInfo, init?: RequestInit) => {
+    return fetch(input, init);
+  },
+});
 
 const watchFetchUsers = createAsyncWatcher({
   actionPrefix: actionType.FETCH_USERS,
@@ -14,6 +20,16 @@ const watchFetchUsers = createAsyncWatcher({
     rawResults[0].results,
 });
 
+const watchFetchRandomUsers = createAsyncWatcher({
+  actionPrefix: actionType.FETCH_RANDOM_USERS,
+  runInSequence: true,
+  listenOnceAtTime: true,
+  mapResultToPayload: (state, action, results, rawResults) => {
+    console.log('results: ', rawResults);
+    return rawResults[0].results;
+  },
+});
+
 export default function* saga() {
-  yield all([watchFetchUsers()]);
+  yield all([watchFetchUsers(), watchFetchRandomUsers()]);
 }

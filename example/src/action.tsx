@@ -6,3 +6,17 @@ export const fetchUsers = (options: { limit?: number } = {}) => ({
     limit: options.limit,
   },
 });
+
+export const fetchRandomUsers = (options: { limit?: number } = {}) => ({
+  type: actionType.FETCH_RANDOM_USERS,
+  http: [
+    {
+      url: `https://randomuser.me/api/?results=${options.limit ?? 100}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    },
+  ],
+});

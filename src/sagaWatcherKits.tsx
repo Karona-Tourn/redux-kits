@@ -14,6 +14,7 @@ import {
 import qs from 'qs';
 import { ActionTypeMaker, IAsyncAction, HttpPayload } from './actionKits';
 import { getConfig } from './configure';
+import { isHttpJsonResponse } from './utils';
 
 const httpStatusCodes = {
   OK: 200,
@@ -185,7 +186,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         let state = yield select();
 
         if (_config?.statuses?.pending) {
-          if (_config.mapActionToPendingPayload) {
+          if (!!_config.mapActionToPendingPayload) {
             yield put({
               type: _config.statuses.pending,
               payload: _config.mapActionToPendingPayload(state, _rootAction),
@@ -201,7 +202,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           getConfig().middleSagaCallback ?? _middleSagaCallback;
 
         // Execute generator function middleware
-        if (middleSagaCallback) {
+        if (!!middleSagaCallback) {
           yield call(
             middleSagaCallback,
             _config as WatcherConfig,
@@ -214,7 +215,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         let httpRequests: CallEffect[] = [];
 
         // Handle http request tasks
-        if (_rootAction && _rootAction.http) {
+        if (!!_rootAction && _rootAction.http) {
           state = yield select();
 
           const baseUrlSelector =
@@ -231,7 +232,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
               let query = '';
 
-              if (params) {
+              if (!!params) {
                 query = `?${qs.stringify(params)}`;
               }
 
@@ -266,21 +267,23 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
                 ...rest,
               };
 
-              if (transformHttpRequestOptions) {
-                reqInit.body = body;
-                reqInit = transformHttpRequestOptions(
-                  _config as WatcherConfig,
-                  state,
-                  reqInit
-                );
+              if (!!transformHttpRequestOptions) {
+                reqInit.body = body as any;
+
+                reqInit =
+                  transformHttpRequestOptions(
+                    _config as WatcherConfig,
+                    state,
+                    reqInit
+                  ) ?? reqInit;
               } else {
                 reqInit.body =
                   method == 'GET'
-                    ? undefined
+                    ? null
                     : !body
-                    ? {}
+                    ? ''
                     : typeof body === 'string' || hasFormData
-                    ? body
+                    ? (body as FormData)
                     : JSON.stringify(body);
               }
 
@@ -290,7 +293,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         }
 
         // Handle general promise tasks
-        if (_config.getPromises) {
+        if (!!_config.getPromises) {
           httpRequests = httpRequests.concat(
             _config
               .getPromises(state, _rootAction)
@@ -314,30 +317,41 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         // Find failed http response
         const failHttpResponse = responses.find(
           (e: any) =>
-            e.json &&
             e.status !== undefined &&
             e.status !== null &&
             e.status !== httpStatusCodes.OK
         );
 
         // Handle throwing error exception in case there is failed http response
-        if (failHttpResponse) {
-          const error: any = yield call([failHttpResponse, 'json']);
+        if (!!failHttpResponse) {
+          let error: any = null;
+
+          if (isHttpJsonResponse(failHttpResponse)) {
+            error = yield call([failHttpResponse, 'json']);
+          } else {
+            error = yield call([failHttpResponse, 'text']);
+          }
 
           throw {
-            message: error.message || 'Something went wrong!',
+            message: error?.message || 'Something went wrong!',
             status: failHttpResponse.status,
           };
         }
 
         const datas = yield all(
-          responses.map((e: any) =>
-            e.json
-              ? call([e, 'json'])
-              : call(function* (p) {
-                  yield p;
-                }, e)
-          )
+          responses.map((e: any) => {
+            if (!!e.headers) {
+              if (isHttpJsonResponse(e)) {
+                return call([e, 'json']);
+              } else if (!!e.text) {
+                return call([e, 'text']);
+              }
+            }
+
+            return call(function* (p) {
+              yield p;
+            }, e);
+          })
         );
 
         const failDataIndex = datas.findIndex(
@@ -399,7 +413,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
   const failSagaCallback = getConfig().failSagaCallback ?? _failSagaCallback;
 
-  if (failSagaCallback) {
+  if (!!failSagaCallback) {
     if (action.type === config?.statuses?.fail) {
       yield call(failSagaCallback, config, action);
     }
@@ -513,7 +527,7 @@ export function createAsyncPagingWatcher(
 
       payload.clear = payload.clear ?? false;
 
-      if (mapActionToPendingPayload) {
+      if (!!mapActionToPendingPayload) {
         payload = {
           ...payload,
           ...mapActionToPendingPayload(state, action),
@@ -526,7 +540,7 @@ export function createAsyncPagingWatcher(
         firstOffset: action.payload.firstOffset ?? true,
       };
 
-      if (mapResultToPayload) {
+      if (!!mapResultToPayload) {
         payload = {
           ...payload,
           ...mapResultToPayload(state, action, data, rawData),

@@ -1,5 +1,5 @@
 import { useEffect, useRef, DependencyList } from 'react';
-import { useSelector, DefaultRootState } from 'react-redux';
+import { useSelector, DefaultRootState, shallowEqual } from 'react-redux';
 import _ from 'lodash';
 
 var emptyObject = {};
@@ -12,8 +12,8 @@ type Error =
   | null
   | undefined;
 
-type AsyncEffectCallback =
-  | ((isFail: boolean, error: Error) => void | undefined)
+type AsyncEffectCallback<T> =
+  | ((isFail: boolean, error: Error, selectData: T) => void | undefined)
   | null
   | undefined;
 
@@ -36,13 +36,20 @@ export function usePrevious(value: any, defaultValue: any = undefined) {
   return ref.current;
 }
 
+/**
+ *
+ * @param reducerPath
+ * @param extraSelector
+ * @param onFinish
+ * @param deps
+ */
 export function useAsyncReducerEffect<
   TSelected extends TAsyncSelected<TSelected>,
   TState = DefaultRootState
 >(
   reducerPath: string,
   extraSelector: (state: TState, destState: TState) => TSelected,
-  onFinish: AsyncEffectCallback,
+  onFinish: AsyncEffectCallback<TAsyncSelected<TSelected>>,
   deps?: DependencyList
 ): TAsyncSelected<TSelected> {
   const finishCallback = useRef(onFinish);
@@ -56,7 +63,7 @@ export function useAsyncReducerEffect<
       error: destState.error,
       ...(extraSelector ? extraSelector(state, destState) : emptyObject),
     } as TSelected;
-  });
+  }, shallowEqual);
 
   useEffect(() => {
     finishCallback.current = onFinish;
@@ -68,7 +75,7 @@ export function useAsyncReducerEffect<
   useEffect(() => {
     if (isPendingPreviously !== ret.isPending && !ret.isPending) {
       finishCallback.current &&
-        finishCallback.current(ret.isFail ? true : false, ret.error);
+        finishCallback.current(ret.isFail ? true : false, ret.error, ret);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ret.isPending, finishCallback.current]);
@@ -76,13 +83,20 @@ export function useAsyncReducerEffect<
   return ret;
 }
 
+/**
+ *
+ * @param reducerPath string as a path to async paging reducer. Path is separated by dot (.)
+ * @param extraSelector function as a state selector
+ * @param onFinish
+ * @param deps
+ */
 export function useAsyncPagingReducerEffect<
   TSelected extends TAsyncSelected<TSelected>,
   TState = DefaultRootState
 >(
   reducerPath: string,
   extraSelector: (state: TState, destState: TState) => TSelected,
-  onFinish: AsyncEffectCallback,
+  onFinish: AsyncEffectCallback<TAsyncSelected<TSelected>>,
   deps?: DependencyList
 ): TAsyncSelected<TSelected> {
   return useAsyncReducerEffect<TSelected, TState>(
