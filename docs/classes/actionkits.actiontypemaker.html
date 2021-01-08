@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Redux Kit | Redux Kit</title>
+	<title>ActionTypeMaker | Redux Kit</title>
 	<meta name="description" content="Documentation for Redux Kit">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -2646,7 +2646,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">Redux Kit</a></strong>
+					<strong><a href="../index.html">Redux Kit</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2676,173 +2676,475 @@ img {
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class=" tsd-kind-class tsd-parent-kind-module">
+			<a href="actionkits.actioncreator.html" class="tsd-kind-icon">Action<wbr>Creator</a>
+		</li>
+		<li class="current tsd-kind-class tsd-parent-kind-module">
+			<a href="actionkits.actiontypemaker.html" class="tsd-kind-icon">Action<wbr>Type<wbr>Maker</a>
+			<ul>
+				<li class=" tsd-kind-constructor tsd-parent-kind-class">
+					<a href="actionkits.actiontypemaker.html#constructor" class="tsd-kind-icon">constructor</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#add_first" class="tsd-kind-icon">ADD_<wbr>FIRST</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#add_last" class="tsd-kind-icon">ADD_<wbr>LAST</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#cancel" class="tsd-kind-icon">CANCEL</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#fail" class="tsd-kind-icon">FAIL</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#pending" class="tsd-kind-icon">PENDING</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#remove" class="tsd-kind-icon">REMOVE</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#replace" class="tsd-kind-icon">REPLACE</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#reset" class="tsd-kind-icon">RESET</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#success" class="tsd-kind-icon">SUCCESS</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a href="actionkits.actiontypemaker.html#update" class="tsd-kind-icon">UPDATE</a>
+				</li>
+			</ul>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+			<a href="../modules/actionkits.html#httppayload" class="tsd-kind-icon">Http<wbr>Payload</a>
+		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<a href="#redux-kits" id="redux-kits" style="color: inherit; text-decoration: none;">
-				<h1>redux-kits</h1>
-			</a>
-			<p>Support you working with async work in Redux. This relies on Redux Saga.</p>
-			<p>You also need to install <a href="https://redux.js.org/introduction/installation#redux-core">redux</a>, <a href="https://react-redux.js.org/introduction/quick-start">react-redux</a> and <a href="https://redux-saga.js.org">redux-saga</a>.</p>
-			<p>Document <a href="https://karona-tourn.github.io/redux-kits">here</a></p>
-			<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-				<h2>Installation</h2>
-			</a>
-			<pre><code class="language-sh"><span style="color: #000000">npm install redux-kits</span>
-</code></pre>
-			<p>or</p>
-			<pre><code class="language-sh"><span style="color: #000000">yarn add redux-kits</span>
-</code></pre>
-			<a href="#motiviation" id="motiviation" style="color: inherit; text-decoration: none;">
-				<h2>Motiviation</h2>
-			</a>
-			<pre><code class="language-javascript"><span style="color: #008000">// Action</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-</code></pre>
-			<pre><code class="language-javascript"><span style="color: #008000">// Previously, I wrote the following code</span>
-
-<span style="color: #008000">// Reducer</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">carts</span><span style="color: #000000"> = (</span><span style="color: #001080">state</span><span style="color: #000000"> = { </span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #0000FF">null</span><span style="color: #000000">, </span><span style="color: #001080">pending:</span><span style="color: #000000"> </span><span style="color: #0000FF">false</span><span style="color: #000000">, </span><span style="color: #001080">error:</span><span style="color: #000000"> </span><span style="color: #0000FF">null</span><span style="color: #000000"> }, </span><span style="color: #001080">action</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">switch</span><span style="color: #000000"> (</span><span style="color: #001080">action</span><span style="color: #000000">.</span><span style="color: #001080">type</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">case</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_PENDING&#039;</span><span style="color: #000000">:</span>
-<span style="color: #000000">    </span><span style="color: #008000">// return updated state telling fetching cart is pending</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">case</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_SUCCESS&#039;</span><span style="color: #000000">:</span>
-<span style="color: #000000">    </span><span style="color: #008000">// return updated state with provided data of payload</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">case</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_FAIL&#039;</span><span style="color: #000000">:</span>
-<span style="color: #000000">    </span><span style="color: #008000">// return updated state with error data</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">default</span><span style="color: #000000">:</span>
-<span style="color: #000000">      </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">state</span><span style="color: #000000">;</span>
-<span style="color: #000000">  }</span>
-<span style="color: #000000">};</span>
-
-<span style="color: #008000">// Saga</span>
-<span style="color: #0000FF">function*</span><span style="color: #000000"> </span><span style="color: #795E26">watchFetchCart</span><span style="color: #000000">() {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">takeLatest</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">, </span><span style="color: #0000FF">function*</span><span style="color: #000000"> () {</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
-<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">put</span><span style="color: #000000">({ </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_PENDING&#039;</span><span style="color: #000000"> });</span>
-
-<span style="color: #000000">      </span><span style="color: #008000">// Request to server to fetch cart data</span>
-
-<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">put</span><span style="color: #000000">({ </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_SUCCESS&#039;</span><span style="color: #000000">, </span><span style="color: #001080">payload:</span><span style="color: #000000"> </span><span style="color: #001080">response</span><span style="color: #000000"> });</span>
-<span style="color: #000000">    } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">error</span><span style="color: #000000">) {</span>
-<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">put</span><span style="color: #000000">({ </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_FAIL&#039;</span><span style="color: #000000">, </span><span style="color: #001080">payload:</span><span style="color: #000000"> </span><span style="color: #001080">error</span><span style="color: #000000"> });</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">  });</span>
-<span style="color: #000000">}</span>
-</code></pre>
-			<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncReducer</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncPagingReducer</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncWatcher</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncPagingWatcher</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">ActionCreator</span><span style="color: #000000">,</span>
-<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;redux-kits&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #008000">// Now, I wrote the following code</span>
-<span style="color: #008000">// Actions</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Reducer</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">carts</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncReducer</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">);</span>
-
-<span style="color: #008000">// Saga</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncWatcher</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #795E26">fetch</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;fetch_cart_url&#039;</span><span style="color: #000000">)],</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// NOTE: you use like this too with redux-kits. But there will be changes you need to update with action creator and watcher.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">http:</span><span style="color: #000000"> [</span>
-<span style="color: #000000">    {</span>
-<span style="color: #000000">      </span><span style="color: #001080">url:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fetch_cart_url&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">      </span><span style="color: #001080">method:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;GET&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    },</span>
-<span style="color: #000000">  ],</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncWatcher</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-</code></pre>
-			<pre><code class="language-javascript"><span style="color: #008000">// More advance code working with pagination</span>
-
-<span style="color: #008000">// Actions</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = ({ </span><span style="color: #001080">firstOffset</span><span style="color: #000000">, </span><span style="color: #001080">limit</span><span style="color: #000000">, </span><span style="color: #001080">clear</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">payload:</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">firstOffset</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">limit</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">clear</span><span style="color: #000000">,</span>
-<span style="color: #000000">  },</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">removeCart</span><span style="color: #000000"> = (</span><span style="color: #001080">id</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">REMOVE</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">  </span><span style="color: #001080">payload:</span><span style="color: #000000"> </span><span style="color: #001080">id</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">addCart</span><span style="color: #000000"> = ({ </span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #001080">itemName</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">ADD_LAST</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">  </span><span style="color: #001080">payload:</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">id</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">itemName</span><span style="color: #000000">,</span>
-<span style="color: #000000">  },</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">clearCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">RESET</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Reducer</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">carts</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncPagingReducer</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">);</span>
-
-<span style="color: #008000">// Saga</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncPagingWatcher</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> (</span><span style="color: #001080">state</span><span style="color: #000000">, </span><span style="color: #001080">action</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [</span>
-<span style="color: #000000">    () </span><span style="color: #0000FF">=&gt;</span>
-<span style="color: #000000">      </span><span style="color: #795E26">fetch</span><span style="color: #000000">(</span>
-<span style="color: #000000">        </span><span style="color: #A31515">`fetch_cart_url?offset=</span><span style="color: #0000FF">${</span>
-<span style="color: #000000FF">          </span><span style="color: #001080">action</span><span style="color: #000000FF">.</span><span style="color: #001080">payload</span><span style="color: #000000FF">.</span><span style="color: #001080">firstOffset</span><span style="color: #000000FF"> </span><span style="color: #000000">?</span><span style="color: #000000FF"> </span><span style="color: #098658">0</span><span style="color: #000000FF"> </span><span style="color: #000000">:</span><span style="color: #000000FF"> </span><span style="color: #001080">state</span><span style="color: #000000FF">.</span><span style="color: #001080">carts</span><span style="color: #000000FF">.</span><span style="color: #001080">offset</span>
-<span style="color: #000000FF">        </span><span style="color: #0000FF">}</span><span style="color: #A31515">&amp;limit=</span><span style="color: #0000FF">${</span><span style="color: #001080">action</span><span style="color: #000000FF">.</span><span style="color: #001080">payload</span><span style="color: #000000FF">.</span><span style="color: #001080">limit</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span>
-<span style="color: #000000">      ),</span>
-<span style="color: #000000">  ],</span>
-<span style="color: #000000">  </span><span style="color: #795E26">mapResultToPayload</span><span style="color: #001080">:</span><span style="color: #000000"> (</span><span style="color: #001080">state</span><span style="color: #000000">, </span><span style="color: #001080">action</span><span style="color: #000000">, </span><span style="color: #001080">results</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">    </span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">],</span>
-<span style="color: #000000">  }),</span>
-<span style="color: #000000">});</span>
-</code></pre>
-			<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-				<h2>License</h2>
-			</a>
-			<p>MIT</p>
-		</div>
-		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
+		<section class="tsd-panel tsd-comment">
+			<div class="tsd-comment tsd-typography">
+				<div class="lead">
+					<p>Action type name maker</p>
+				</div>
+			</div>
+		</section>
+		<section class="tsd-panel tsd-hierarchy">
+			<h3>Hierarchy</h3>
+			<ul class="tsd-hierarchy">
+				<li>
+					<span class="target">ActionTypeMaker</span>
+				</li>
+			</ul>
+		</section>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Modules</h3>
+						<h3>Constructors</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-module"><a href="modules/actionkits.html" class="tsd-kind-icon">action<wbr>Kits</a></li>
-							<li class="tsd-kind-module"><a href="modules/configure.html" class="tsd-kind-icon">configure</a></li>
-							<li class="tsd-kind-module"><a href="modules/hooks.html" class="tsd-kind-icon">hooks</a></li>
-							<li class="tsd-kind-module"><a href="modules/reducerkits.html" class="tsd-kind-icon">reducer<wbr>Kits</a></li>
-							<li class="tsd-kind-module"><a href="modules/sagawatcherkits.html" class="tsd-kind-icon">saga<wbr>Watcher<wbr>Kits</a></li>
-							<li class="tsd-kind-module"><a href="modules/utils.html" class="tsd-kind-icon">utils</a></li>
+							<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="actionkits.actiontypemaker.html#constructor" class="tsd-kind-icon">constructor</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Methods</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#add_first" class="tsd-kind-icon">ADD_<wbr>FIRST</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#add_last" class="tsd-kind-icon">ADD_<wbr>LAST</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#cancel" class="tsd-kind-icon">CANCEL</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#fail" class="tsd-kind-icon">FAIL</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#pending" class="tsd-kind-icon">PENDING</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#remove" class="tsd-kind-icon">REMOVE</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#replace" class="tsd-kind-icon">REPLACE</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#reset" class="tsd-kind-icon">RESET</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#success" class="tsd-kind-icon">SUCCESS</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="actionkits.actiontypemaker.html#update" class="tsd-kind-icon">UPDATE</a></li>
 						</ul>
 					</section>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Constructors</h2>
+			<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+				<a name="constructor" class="tsd-anchor"></a>
+				<h3>constructor</h3>
+				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Action<wbr>Type<wbr>Maker<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="actionkits.actiontypemaker.html" class="tsd-signature-type" data-tsd-kind="Class">ActionTypeMaker</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+						</aside>
+						<h4 class="tsd-returns-title">Returns <a href="actionkits.actiontypemaker.html" class="tsd-signature-type" data-tsd-kind="Class">ActionTypeMaker</a></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="add_first" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> ADD_<wbr>FIRST</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">ADD_<wbr>FIRST<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L224">actionKits.tsx:224</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_ADD_FIRST</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_ADD_FIRST</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="add_last" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> ADD_<wbr>LAST</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">ADD_<wbr>LAST<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L240">actionKits.tsx:240</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_ADD_LAST</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_ADD_LAST</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="cancel" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> CANCEL</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">CANCEL<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L176">actionKits.tsx:176</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_CANCEL</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_CANCEL</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="fail" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> FAIL</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">FAIL<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L144">actionKits.tsx:144</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_FAIL</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_FAIL</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="pending" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> PENDING</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">PENDING<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L112">actionKits.tsx:112</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_PENDING</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_PENDING</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="remove" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> REMOVE</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">REMOVE<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L192">actionKits.tsx:192</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_REMOVE</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_REMOVE</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="replace" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> REPLACE</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">REPLACE<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L256">actionKits.tsx:256</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_REPLACE</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_REPLACE</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="reset" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> RESET</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">RESET<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L160">actionKits.tsx:160</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_RESET</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_RESET</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="success" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> SUCCESS</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">SUCCESS<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L128">actionKits.tsx:128</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_SUCCESS</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_SUCCESS</span>
+</code></pre>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+				<a name="update" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> UPDATE</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">UPDATE<span class="tsd-signature-symbol">(</span>prefix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/actionKits.tsx#L208">actionKits.tsx:208</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an action type with <code>_UPDATE</code> suffix</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>prefix: <span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Main name of an action type</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						<p>Full action type name concating with the suffix</p>
+						<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">type</span><span style="color: #000000"> = </span><span style="color: #001080">actionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PROFILE&#039;</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">type</span><span style="color: #000000">); </span><span style="color: #008000">// FETCH_PROFILE_UPDATE</span>
+</code></pre>
+					</li>
+				</ul>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
@@ -2855,10 +3157,14 @@ img {
 						<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 					</ul>
 					<ul class="tsd-legend">
+						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+						<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+					</ul>
+					<ul class="tsd-legend">
 						<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 					</ul>
 				</div>
 			</div>

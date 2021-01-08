@@ -20,7 +20,7 @@
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods",
-    "doc": "yarn typedoc --theme minimal --excludeNotExported --name 'Redux Kit' --exclude '**/*+(index|.test).tsx' --out docs src"
+    "doc": "yarn typedoc --theme minimal --name 'Redux Kit' --exclude '**/*+(index|.test).tsx' --out docs src"
   },
   "keywords": [
     "redux-kits"

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Redux Kit | Redux Kit</title>
+	<title>sagaWatcherKits | Redux Kit</title>
 	<meta name="description" content="Documentation for Redux Kit">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -2646,7 +2646,7 @@ img {
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">Redux Kit</a></strong>
+					<strong><a href="../index.html">Redux Kit</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -2676,173 +2676,405 @@ img {
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
+		<li class=" tsd-kind-interface tsd-parent-kind-module">
+			<a href="../interfaces/sagawatcherkits.iasyncconfig.html" class="tsd-kind-icon">IAsync<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-module">
+			<a href="../interfaces/sagawatcherkits.iasyncstatus.html" class="tsd-kind-icon">IAsync<wbr>Status</a>
+		</li>
+		<li class=" tsd-kind-interface tsd-parent-kind-module">
+			<a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-kind-icon">Watcher<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#httpheaderselector" class="tsd-kind-icon">Http<wbr>Header<wbr>Selector</a>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#middlesagacallback" class="tsd-kind-icon">Middle<wbr>Saga<wbr>Callback</a>
+		</li>
+		<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#promisefunction" class="tsd-kind-icon">Promise<wbr>Function</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#createasyncpagingwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Paging<wbr>Watcher</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#createasyncwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Watcher</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#runasync" class="tsd-kind-icon">run<wbr>Async</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#setbaseurlselector" class="tsd-kind-icon">set<wbr>Base<wbr>Url<wbr>Selector</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#setfailsagacallback" class="tsd-kind-icon">set<wbr>Fail<wbr>Saga<wbr>Callback</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#setheaderselector" class="tsd-kind-icon">set<wbr>Header<wbr>Selector</a>
+		</li>
+		<li class=" tsd-kind-function tsd-parent-kind-module">
+			<a href="sagawatcherkits.html#setmiddlesagacallback" class="tsd-kind-icon">set<wbr>Middle<wbr>Saga<wbr>Callback</a>
+		</li>
 	</ul>
 </nav>
 <div class="container container-main">
 	<div class="content-wrap">
-		<div class="tsd-panel tsd-typography">
-			<a href="#redux-kits" id="redux-kits" style="color: inherit; text-decoration: none;">
-				<h1>redux-kits</h1>
-			</a>
-			<p>Support you working with async work in Redux. This relies on Redux Saga.</p>
-			<p>You also need to install <a href="https://redux.js.org/introduction/installation#redux-core">redux</a>, <a href="https://react-redux.js.org/introduction/quick-start">react-redux</a> and <a href="https://redux-saga.js.org">redux-saga</a>.</p>
-			<p>Document <a href="https://karona-tourn.github.io/redux-kits">here</a></p>
-			<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-				<h2>Installation</h2>
-			</a>
-			<pre><code class="language-sh"><span style="color: #000000">npm install redux-kits</span>
-</code></pre>
-			<p>or</p>
-			<pre><code class="language-sh"><span style="color: #000000">yarn add redux-kits</span>
-</code></pre>
-			<a href="#motiviation" id="motiviation" style="color: inherit; text-decoration: none;">
-				<h2>Motiviation</h2>
-			</a>
-			<pre><code class="language-javascript"><span style="color: #008000">// Action</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-</code></pre>
-			<pre><code class="language-javascript"><span style="color: #008000">// Previously, I wrote the following code</span>
-
-<span style="color: #008000">// Reducer</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">carts</span><span style="color: #000000"> = (</span><span style="color: #001080">state</span><span style="color: #000000"> = { </span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #0000FF">null</span><span style="color: #000000">, </span><span style="color: #001080">pending:</span><span style="color: #000000"> </span><span style="color: #0000FF">false</span><span style="color: #000000">, </span><span style="color: #001080">error:</span><span style="color: #000000"> </span><span style="color: #0000FF">null</span><span style="color: #000000"> }, </span><span style="color: #001080">action</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">switch</span><span style="color: #000000"> (</span><span style="color: #001080">action</span><span style="color: #000000">.</span><span style="color: #001080">type</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">case</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_PENDING&#039;</span><span style="color: #000000">:</span>
-<span style="color: #000000">    </span><span style="color: #008000">// return updated state telling fetching cart is pending</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">case</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_SUCCESS&#039;</span><span style="color: #000000">:</span>
-<span style="color: #000000">    </span><span style="color: #008000">// return updated state with provided data of payload</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">case</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_FAIL&#039;</span><span style="color: #000000">:</span>
-<span style="color: #000000">    </span><span style="color: #008000">// return updated state with error data</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">default</span><span style="color: #000000">:</span>
-<span style="color: #000000">      </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">state</span><span style="color: #000000">;</span>
-<span style="color: #000000">  }</span>
-<span style="color: #000000">};</span>
-
-<span style="color: #008000">// Saga</span>
-<span style="color: #0000FF">function*</span><span style="color: #000000"> </span><span style="color: #795E26">watchFetchCart</span><span style="color: #000000">() {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">takeLatest</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">, </span><span style="color: #0000FF">function*</span><span style="color: #000000"> () {</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
-<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">put</span><span style="color: #000000">({ </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_PENDING&#039;</span><span style="color: #000000"> });</span>
-
-<span style="color: #000000">      </span><span style="color: #008000">// Request to server to fetch cart data</span>
-
-<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">put</span><span style="color: #000000">({ </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_SUCCESS&#039;</span><span style="color: #000000">, </span><span style="color: #001080">payload:</span><span style="color: #000000"> </span><span style="color: #001080">response</span><span style="color: #000000"> });</span>
-<span style="color: #000000">    } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">error</span><span style="color: #000000">) {</span>
-<span style="color: #000000">      </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">put</span><span style="color: #000000">({ </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART_FAIL&#039;</span><span style="color: #000000">, </span><span style="color: #001080">payload:</span><span style="color: #000000"> </span><span style="color: #001080">error</span><span style="color: #000000"> });</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">  });</span>
-<span style="color: #000000">}</span>
-</code></pre>
-			<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncReducer</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncPagingReducer</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncWatcher</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">createAsyncPagingWatcher</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">ActionCreator</span><span style="color: #000000">,</span>
-<span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;redux-kits&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #008000">// Now, I wrote the following code</span>
-<span style="color: #008000">// Actions</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Reducer</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">carts</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncReducer</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">);</span>
-
-<span style="color: #008000">// Saga</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncWatcher</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #795E26">fetch</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;fetch_cart_url&#039;</span><span style="color: #000000">)],</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// NOTE: you use like this too with redux-kits. But there will be changes you need to update with action creator and watcher.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">http:</span><span style="color: #000000"> [</span>
-<span style="color: #000000">    {</span>
-<span style="color: #000000">      </span><span style="color: #001080">url:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;fetch_cart_url&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">      </span><span style="color: #001080">method:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;GET&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    },</span>
-<span style="color: #000000">  ],</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncWatcher</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-</code></pre>
-			<pre><code class="language-javascript"><span style="color: #008000">// More advance code working with pagination</span>
-
-<span style="color: #008000">// Actions</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">fetchCart</span><span style="color: #000000"> = ({ </span><span style="color: #001080">firstOffset</span><span style="color: #000000">, </span><span style="color: #001080">limit</span><span style="color: #000000">, </span><span style="color: #001080">clear</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #001080">payload:</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">firstOffset</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">limit</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">clear</span><span style="color: #000000">,</span>
-<span style="color: #000000">  },</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">removeCart</span><span style="color: #000000"> = (</span><span style="color: #001080">id</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">REMOVE</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">  </span><span style="color: #001080">payload:</span><span style="color: #000000"> </span><span style="color: #001080">id</span><span style="color: #000000">,</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">addCart</span><span style="color: #000000"> = ({ </span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #001080">itemName</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">ADD_LAST</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">  </span><span style="color: #001080">payload:</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">id</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">itemName</span><span style="color: #000000">,</span>
-<span style="color: #000000">  },</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #795E26">clearCart</span><span style="color: #000000"> = () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">  </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">RESET</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Reducer</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">carts</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncPagingReducer</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">);</span>
-
-<span style="color: #008000">// Saga</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncPagingWatcher</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> (</span><span style="color: #001080">state</span><span style="color: #000000">, </span><span style="color: #001080">action</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [</span>
-<span style="color: #000000">    () </span><span style="color: #0000FF">=&gt;</span>
-<span style="color: #000000">      </span><span style="color: #795E26">fetch</span><span style="color: #000000">(</span>
-<span style="color: #000000">        </span><span style="color: #A31515">`fetch_cart_url?offset=</span><span style="color: #0000FF">${</span>
-<span style="color: #000000FF">          </span><span style="color: #001080">action</span><span style="color: #000000FF">.</span><span style="color: #001080">payload</span><span style="color: #000000FF">.</span><span style="color: #001080">firstOffset</span><span style="color: #000000FF"> </span><span style="color: #000000">?</span><span style="color: #000000FF"> </span><span style="color: #098658">0</span><span style="color: #000000FF"> </span><span style="color: #000000">:</span><span style="color: #000000FF"> </span><span style="color: #001080">state</span><span style="color: #000000FF">.</span><span style="color: #001080">carts</span><span style="color: #000000FF">.</span><span style="color: #001080">offset</span>
-<span style="color: #000000FF">        </span><span style="color: #0000FF">}</span><span style="color: #A31515">&amp;limit=</span><span style="color: #0000FF">${</span><span style="color: #001080">action</span><span style="color: #000000FF">.</span><span style="color: #001080">payload</span><span style="color: #000000FF">.</span><span style="color: #001080">limit</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span>
-<span style="color: #000000">      ),</span>
-<span style="color: #000000">  ],</span>
-<span style="color: #000000">  </span><span style="color: #795E26">mapResultToPayload</span><span style="color: #001080">:</span><span style="color: #000000"> (</span><span style="color: #001080">state</span><span style="color: #000000">, </span><span style="color: #001080">action</span><span style="color: #000000">, </span><span style="color: #001080">results</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> ({</span>
-<span style="color: #000000">    </span><span style="color: #001080">data:</span><span style="color: #000000"> </span><span style="color: #001080">results</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">],</span>
-<span style="color: #000000">  }),</span>
-<span style="color: #000000">});</span>
-</code></pre>
-			<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-				<h2>License</h2>
-			</a>
-			<p>MIT</p>
-		</div>
-		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
 					<section class="tsd-index-section ">
-						<h3>Modules</h3>
+						<h3>Interfaces</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-module"><a href="modules/actionkits.html" class="tsd-kind-icon">action<wbr>Kits</a></li>
-							<li class="tsd-kind-module"><a href="modules/configure.html" class="tsd-kind-icon">configure</a></li>
-							<li class="tsd-kind-module"><a href="modules/hooks.html" class="tsd-kind-icon">hooks</a></li>
-							<li class="tsd-kind-module"><a href="modules/reducerkits.html" class="tsd-kind-icon">reducer<wbr>Kits</a></li>
-							<li class="tsd-kind-module"><a href="modules/sagawatcherkits.html" class="tsd-kind-icon">saga<wbr>Watcher<wbr>Kits</a></li>
-							<li class="tsd-kind-module"><a href="modules/utils.html" class="tsd-kind-icon">utils</a></li>
+							<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/sagawatcherkits.iasyncconfig.html" class="tsd-kind-icon">IAsync<wbr>Config</a></li>
+							<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/sagawatcherkits.iasyncstatus.html" class="tsd-kind-icon">IAsync<wbr>Status</a></li>
+							<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-kind-icon">Watcher<wbr>Config</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Type aliases</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="sagawatcherkits.html#httpheaderselector" class="tsd-kind-icon">Http<wbr>Header<wbr>Selector</a></li>
+							<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="sagawatcherkits.html#middlesagacallback" class="tsd-kind-icon">Middle<wbr>Saga<wbr>Callback</a></li>
+							<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="sagawatcherkits.html#promisefunction" class="tsd-kind-icon">Promise<wbr>Function</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Functions</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#createasyncpagingwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Paging<wbr>Watcher</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#createasyncwatcher" class="tsd-kind-icon">create<wbr>Async<wbr>Watcher</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#runasync" class="tsd-kind-icon">run<wbr>Async</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#setbaseurlselector" class="tsd-kind-icon">set<wbr>Base<wbr>Url<wbr>Selector</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#setfailsagacallback" class="tsd-kind-icon">set<wbr>Fail<wbr>Saga<wbr>Callback</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#setheaderselector" class="tsd-kind-icon">set<wbr>Header<wbr>Selector</a></li>
+							<li class="tsd-kind-function tsd-parent-kind-module"><a href="sagawatcherkits.html#setmiddlesagacallback" class="tsd-kind-icon">set<wbr>Middle<wbr>Saga<wbr>Callback</a></li>
 						</ul>
 					</section>
 				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Type aliases</h2>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+				<a name="httpheaderselector" class="tsd-anchor"></a>
+				<h3>Http<wbr>Header<wbr>Selector</h3>
+				<div class="tsd-signature tsd-kind-icon">Http<wbr>Header<wbr>Selector<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">WatcherConfig</a>, state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAsyncAction</span>, http<span class="tsd-signature-symbol">: </span><a href="actionkits.html#httppayload" class="tsd-signature-type" data-tsd-kind="Type alias">HttpPayload</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Headers</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L116">sagaWatcherKits.tsx:116</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+				<a name="middlesagacallback" class="tsd-anchor"></a>
+				<h3>Middle<wbr>Saga<wbr>Callback</h3>
+				<div class="tsd-signature tsd-kind-icon">Middle<wbr>Saga<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">WatcherConfig</a>, state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAsyncAction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L129">sagaWatcherKits.tsx:129</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+				<a name="promisefunction" class="tsd-anchor"></a>
+				<h3>Promise<wbr>Function</h3>
+				<div class="tsd-signature tsd-kind-icon">Promise<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L47">sagaWatcherKits.tsx:47</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+						<li class="tsd-parameter-signature">
+							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias">
+								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+							</ul>
+							<ul class="tsd-descriptions">
+								<li class="tsd-description">
+									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Functions</h2>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="createasyncpagingwatcher" class="tsd-anchor"></a>
+				<h3>create<wbr>Async<wbr>Paging<wbr>Watcher</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">create<wbr>Async<wbr>Paging<wbr>Watcher<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">WatcherConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L503">sagaWatcherKits.tsx:503</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create a saga watcher. It works closely with the function <a href="reducerkits.html#createasyncpagingreducer">createAsyncPagingReducer</a> creating a reducer with the same matched prefix action type</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">WatcherConfig</a><span class="tsd-signature-symbol"> = ...</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<pre><code class="language-javascript"><span style="color: #008000">// Saga watcher</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncPagingWatcher</span><span style="color: #000000">({</span>
+<span style="color: #000000"> </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_PRODUCTS&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000"> </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> (</span><span style="color: #001080">state</span><span style="color: #000000">, </span><span style="color: #001080">action</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">api</span><span style="color: #000000">.</span><span style="color: #795E26">fetchProduct</span><span style="color: #000000">({ </span><span style="color: #001080">limit:</span><span style="color: #000000"> </span><span style="color: #001080">action</span><span style="color: #000000">.</span><span style="color: #001080">payload</span><span style="color: #000000">.</span><span style="color: #001080">limit</span><span style="color: #000000">, </span><span style="color: #001080">offset:</span><span style="color: #000000"> </span><span style="color: #001080">action</span><span style="color: #000000">.</span><span style="color: #001080">payload</span><span style="color: #000000">.</span><span style="color: #001080">firstOffset</span><span style="color: #000000"> ? </span><span style="color: #098658">0</span><span style="color: #000000"> : </span><span style="color: #001080">state</span><span style="color: #000000">.</span><span style="color: #001080">products</span><span style="color: #000000">.</span><span style="color: #001080">offset</span><span style="color: #000000"> })]</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #0000FF">function*</span><span style="color: #000000"> </span><span style="color: #795E26">rootSaga</span><span style="color: #000000">() {</span>
+<span style="color: #000000"> </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">all</span><span style="color: #000000">([</span>
+<span style="color: #000000">   </span><span style="color: #795E26">watchFetchCart</span><span style="color: #000000">()</span>
+<span style="color: #000000"> ]);</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #008000">// Reducer</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">products</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncPagingReducer</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_PRODUCTS&#039;</span><span style="color: #000000">);</span>
+</code></pre>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="createasyncwatcher" class="tsd-anchor"></a>
+				<h3>create<wbr>Async<wbr>Watcher</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">create<wbr>Async<wbr>Watcher<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">WatcherConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L445">sagaWatcherKits.tsx:445</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create a saga watcher. It works closely with the function <a href="reducerkits.html#createasyncreducer">createAsyncReducer</a> creating a reducer with the same matched prefix action type</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="../interfaces/sagawatcherkits.watcherconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">WatcherConfig</a><span class="tsd-signature-symbol"> = ...</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<pre><code class="language-javascript"><span style="color: #008000">// Saga watcher</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">watchFetchCart</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncWatcher</span><span style="color: #000000">({</span>
+<span style="color: #000000"> </span><span style="color: #001080">actionPrefix:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000"> </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">api</span><span style="color: #000000">.</span><span style="color: #795E26">fetchCart</span><span style="color: #000000">()]</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #0000FF">function*</span><span style="color: #000000"> </span><span style="color: #795E26">rootSaga</span><span style="color: #000000">() {</span>
+<span style="color: #000000"> </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">all</span><span style="color: #000000">([</span>
+<span style="color: #000000">   </span><span style="color: #795E26">watchFetchCart</span><span style="color: #000000">()</span>
+<span style="color: #000000"> ]);</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #008000">// Reducer</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">carts</span><span style="color: #000000"> = </span><span style="color: #795E26">createAsyncReducer</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">)</span>
+</code></pre>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="runasync" class="tsd-anchor"></a>
+				<h3>run<wbr>Async</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">run<wbr>Async<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/sagawatcherkits.iasyncconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">IAsyncConfig</a>, rootAction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAsyncAction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">CallEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SelectEffect</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PutEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CallEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AllEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PutEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CancelledEffect</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TakeEffect</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CancelEffect</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L182">sagaWatcherKits.tsx:182</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Function for helping running async task having status pending, success, fail and cancel</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="../interfaces/sagawatcherkits.iasyncconfig.html" class="tsd-signature-type" data-tsd-kind="Interface">IAsyncConfig</a></h5>
+							</li>
+							<li>
+								<h5>rootAction: <span class="tsd-signature-type">IAsyncAction</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<pre><code class="language-javascript"><span style="color: #008000">// Example</span>
+<span style="color: #0000FF">function*</span><span style="color: #000000"> </span><span style="color: #795E26">saga</span><span style="color: #000000">() {</span>
+<span style="color: #000000"> </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">task</span><span style="color: #000000"> = </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">fork</span><span style="color: #000000">(</span><span style="color: #001080">runAsync</span><span style="color: #000000">, {</span>
+<span style="color: #000000">   </span><span style="color: #795E26">getPromises</span><span style="color: #001080">:</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">api</span><span style="color: #000000">.</span><span style="color: #795E26">fetchCart</span><span style="color: #000000">()],</span>
+<span style="color: #000000">   </span><span style="color: #001080">statuses:</span><span style="color: #000000"> {</span>
+<span style="color: #000000">     </span><span style="color: #001080">pending:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">PENDING</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">     </span><span style="color: #001080">success:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">SUCCESS</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">     </span><span style="color: #001080">fail:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">FAIL</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">     </span><span style="color: #001080">reset:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">RESET</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">     </span><span style="color: #001080">cancel:</span><span style="color: #000000"> </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">CANCEL</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">),</span>
+<span style="color: #000000">   }</span>
+<span style="color: #000000">  });</span>
+
+<span style="color: #000000"> </span><span style="color: #008000">// Wait if success or fail</span>
+<span style="color: #000000"> </span><span style="color: #AF00DB">yield</span><span style="color: #000000"> </span><span style="color: #795E26">take</span><span style="color: #000000">([</span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">SUCCESS</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">), </span><span style="color: #001080">ActionTypeMaker</span><span style="color: #000000">.</span><span style="color: #795E26">FAIL</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;FETCH_CART&#039;</span><span style="color: #000000">)])</span>
+<span style="color: #000000">}</span>
+</code></pre>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">CallEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ForkEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Generator</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SelectEffect</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PutEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CallEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AllEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PutEffect</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CancelledEffect</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TakeEffect</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">CancelEffect</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="setbaseurlselector" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> set<wbr>Base<wbr>Url<wbr>Selector</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Base<wbr>Url<wbr>Selector<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BaseUrlSelector</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L112">sagaWatcherKits.tsx:112</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>selector: <span class="tsd-signature-type">BaseUrlSelector</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="setfailsagacallback" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> set<wbr>Fail<wbr>Saga<wbr>Callback</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Fail<wbr>Saga<wbr>Callback<span class="tsd-signature-symbol">(</span>saga<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FailSagaCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L153">sagaWatcherKits.tsx:153</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Set a saga function to be executed after fail status detected</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>saga: <span class="tsd-signature-type">FailSagaCallback</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Saga function</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="setheaderselector" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> set<wbr>Header<wbr>Selector</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Header<wbr>Selector<span class="tsd-signature-symbol">(</span>selector<span class="tsd-signature-symbol">: </span><a href="sagawatcherkits.html#httpheaderselector" class="tsd-signature-type" data-tsd-kind="Type alias">HttpHeaderSelector</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L125">sagaWatcherKits.tsx:125</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>selector: <a href="sagawatcherkits.html#httpheaderselector" class="tsd-signature-type" data-tsd-kind="Type alias">HttpHeaderSelector</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<a name="setmiddlesagacallback" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> set<wbr>Middle<wbr>Saga<wbr>Callback</h3>
+				<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Middle<wbr>Saga<wbr>Callback<span class="tsd-signature-symbol">(</span>saga<span class="tsd-signature-symbol">: </span><a href="sagawatcherkits.html#middlesagacallback" class="tsd-signature-type" data-tsd-kind="Type alias">MiddleSagaCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/Karona-Tourn/redux-kits/blob/798f604/src/sagaWatcherKits.tsx#L139">sagaWatcherKits.tsx:139</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Set a saga function to be executed between pending status and success/fail status</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>saga: <a href="sagawatcherkits.html#middlesagacallback" class="tsd-signature-type" data-tsd-kind="Type alias">MiddleSagaCallback</a></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Saga function</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
