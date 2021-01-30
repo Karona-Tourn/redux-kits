@@ -37,8 +37,9 @@ export function usePrevious(value: any, defaultValue: any = undefined) {
 }
 
 /**
+ * Hook that trigger every change in async reducer field at the path it is watching
  *
- * @param reducerPath
+ * @param reducerPath Path to object field of reducer. More about [path](https://lodash.com/docs/4.17.15#get), you can check with [lodash](https://lodash.com)
  * @param extraSelector
  * @param onFinish
  * @param deps
@@ -58,9 +59,9 @@ export function useAsyncReducerEffect<
     const destState = _.get(state, reducerPath);
 
     return {
-      isPending: destState.pending ? true : false,
-      isFail: destState.error ? true : false,
-      error: destState.error,
+      isPending: destState?.pending ? true : false,
+      isFail: destState?.error ? true : false,
+      error: destState?.error,
       ...(extraSelector ? extraSelector(state, destState) : emptyObject),
     } as TSelected;
   }, shallowEqual);
@@ -84,8 +85,9 @@ export function useAsyncReducerEffect<
 }
 
 /**
+ * Hook that trigger every change in async paging reducer field at the path it is watching
  *
- * @param reducerPath string as a path to async paging reducer. Path is separated by dot (.)
+ * @param reducerPath Path to object field of reducer. More about [path](https://lodash.com/docs/4.17.15#get), you can check with [lodash](https://lodash.com)
  * @param extraSelector function as a state selector
  * @param onFinish
  * @param deps
