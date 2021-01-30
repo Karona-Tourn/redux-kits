@@ -25,7 +25,6 @@ const watchFetchRandomUsers = createAsyncWatcher({
   runInSequence: true,
   listenOnceAtTime: true,
   mapResultToPayload: (state, action, results, rawResults) => {
-    console.log('results: ', rawResults);
     return rawResults[0].results;
   },
 });

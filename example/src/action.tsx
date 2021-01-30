@@ -1,10 +1,11 @@
 import actionType from './actionType';
 
-export const fetchUsers = (options: { limit?: number } = {}) => ({
+export const fetchUsers = (options: { limit?: number; key?: string } = {}) => ({
   type: actionType.FETCH_USERS,
   payload: {
     limit: options.limit,
   },
+  key: options.key,
 });
 
 export const fetchRandomUsers = (options: { limit?: number } = {}) => ({

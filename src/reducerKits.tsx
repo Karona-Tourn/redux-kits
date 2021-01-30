@@ -5,6 +5,7 @@ import {
   IAsyncPagingAction,
   IAsyncPagingPayload,
 } from './actionKits';
+import _ from 'lodash';
 
 /**
  * Initial async reducerstate
@@ -21,6 +22,10 @@ export interface IAsyncState {
    * Tell if a reducer has error
    */
   error: any;
+
+  dataEntity?: {
+    [key: string]: IAsyncState;
+  };
 }
 
 /**
@@ -256,21 +261,89 @@ export function createAsyncReducer(
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
-          draftState.pending = true;
+          const key = action.key;
+          if (key) {
+            if (!draftState.dataEntity) {
+              draftState.dataEntity = {};
+            }
+            if (draftState.dataEntity[key]) {
+              const data = draftState.dataEntity[key];
+              data.pending = true;
+            } else {
+              draftState.dataEntity[key] = {
+                ...defaultState,
+                pending: true,
+              };
+            }
+          } else {
+            draftState.pending = true;
+          }
         });
       case SUCCESS:
         return produce(state, (draftState) => {
-          draftState.data = action.payload;
-          draftState.error = null;
-          draftState.pending = false;
+          const key = action.key;
+
+          if (key) {
+            if (!draftState.dataEntity) {
+              draftState.dataEntity = {};
+            }
+            if (draftState.dataEntity[key]) {
+              const data = draftState.dataEntity[key];
+              data.data = action.payload;
+              data.error = null;
+              data.pending = false;
+            } else {
+              draftState.dataEntity[key] = {
+                data: action.payload,
+                error: null,
+                pending: false,
+              };
+            }
+          } else {
+            draftState.data = action.payload;
+            draftState.error = null;
+            draftState.pending = false;
+          }
         });
       case FAIL:
         return produce(state, (draftState) => {
-          draftState.error = action.payload;
-          draftState.pending = false;
+          const key = action.key;
+          if (key) {
+            if (!draftState.dataEntity) {
+              draftState.dataEntity = {};
+            }
+            if (draftState.dataEntity[key]) {
+              const data = draftState.dataEntity[key];
+              data.error = action.payload;
+              data.pending = false;
+            } else {
+              draftState.dataEntity[key] = {
+                ...defaultState,
+                error: action.payload,
+                pending: true,
+              };
+            }
+          } else {
+            draftState.error = action.payload;
+            draftState.pending = false;
+          }
         });
       case RESET:
-        return produce(defaultState, () => {});
+        return produce(state, (draftState) => {
+          const key = action.key;
+
+          if (key) {
+            if (key === '*') {
+              _.unset(draftState, 'dataEntity');
+            } else {
+              _.unset(draftState, `dataEntity.${key}`);
+            }
+          } else {
+            draftState.data = null;
+            draftState.error = null;
+            draftState.pending = false;
+          }
+        });
       default:
         return state;
     }

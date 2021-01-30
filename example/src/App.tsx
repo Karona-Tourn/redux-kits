@@ -17,15 +17,17 @@ import { useDispatch } from 'react-redux';
 import { fetchUsers, fetchRandomUsers } from './action';
 import { useState } from 'react';
 
+const userEntityKey = 'users1';
+
 export default function App() {
   const dispatch = useDispatch();
   const [is100UserLoad, setIs100UserLoad] = useState(false);
 
   const { isPending, isFail, users } = useAsyncReducerEffect(
-    'users',
+    `users.dataEntity.${userEntityKey}`,
     (_, users: any) => {
       return {
-        users: users.data,
+        users: users?.data ?? [],
       };
     },
     (isFail, error) => {
@@ -64,6 +66,7 @@ export default function App() {
       setIs100UserLoad(false);
       dispatch(
         fetchUsers({
+          key: userEntityKey,
           limit: 100,
         })
       );

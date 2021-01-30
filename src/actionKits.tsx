@@ -1,4 +1,12 @@
 import { IAsyncPagingData } from './reducerKits';
+import { IAsyncStatus } from './sagaWatcherKits';
+
+export class BasicAsyncActionTypes {
+  static PENDING: 'PENDING';
+  static SUCCESS: 'SUCCESS';
+  static FAIL: 'FAIL';
+  static CANCEL: 'CANCEL';
+}
 
 export type HttpPayload = {
   url: string;
@@ -20,6 +28,7 @@ export interface IAsyncAction {
   type: string;
   payload?: any;
   http?: HttpPayload[];
+  key?: string;
 }
 
 /**
@@ -256,6 +265,18 @@ export class ActionTypeMaker {
   static REPLACE(prefix: string) {
     const at = getCachedActionType(prefix);
     return at.replace || (at.replace = `${prefix}_REPLACE`);
+  }
+
+  /**
+   *
+   * @param prefix Main name of an action type
+   */
+  static createAsyncActionTypes(prefix: string): IAsyncStatus {
+    return {
+      pending: ActionTypeMaker.PENDING(prefix),
+      success: ActionTypeMaker.SUCCESS(prefix),
+      fail: ActionTypeMaker.FAIL(prefix),
+    };
   }
 }
 

@@ -8,3 +8,14 @@ export function isHttpJsonResponse(res: Response) {
 
   return false;
 }
+
+export function isHttpResponse(res: Response) {
+  return res instanceof Response;
+}
+
+/**
+ * @ignore
+ */
+export class HttpStatusCodes {
+  static OK = 200;
+}

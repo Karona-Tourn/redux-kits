@@ -12,13 +12,19 @@ import {
   takeLeading,
 } from 'redux-saga/effects';
 import qs from 'qs';
-import { ActionTypeMaker, IAsyncAction, HttpPayload } from './actionKits';
+import {
+  ActionTypeMaker,
+  IAsyncAction,
+  HttpPayload,
+  BasicAsyncActionTypes,
+} from './actionKits';
 import { getConfig } from './configure';
-import { isHttpJsonResponse } from './utils';
+import { HttpStatusCodes, isHttpJsonResponse, isHttpResponse } from './utils';
 
-const httpStatusCodes = {
-  OK: 200,
-};
+export interface FailResult {
+  message: string;
+  status?: boolean;
+}
 
 /**
  * Instance object that will become:
@@ -37,11 +43,11 @@ const httpStatusCodes = {
  * Note: it will be used by [[runAsync]]
  */
 export interface IAsyncStatus {
-  pending?: string | null;
-  success: string | null;
-  fail: string | null;
-  reset?: string | null;
-  cancel?: string | null;
+  pending?: string;
+  success: string;
+  fail: string;
+  reset?: string;
+  cancel?: string;
 }
 
 export type PromiseFunction = () => Promise<any>;
@@ -109,10 +115,18 @@ type BaseUrlSelector =
   | ((config: WatcherConfig, state: any, action: IAsyncAction) => string)
   | null;
 var _baseUrlSelector: BaseUrlSelector = null;
+/**
+ *
+ * @param selector
+ * @deprecated Use [[configure]] instead
+ */
 export const setBaseUrlSelector = (selector: BaseUrlSelector) => {
   _baseUrlSelector = selector;
 };
 
+/**
+ * @deprecated
+ */
 export type HttpHeaderSelector =
   | ((
       config: WatcherConfig,
@@ -122,10 +136,18 @@ export type HttpHeaderSelector =
     ) => Headers)
   | null;
 var _httpHeaderSelector: HttpHeaderSelector = null;
+/**
+ *
+ * @param selector
+ * @deprecated Use [[configure]] instead
+ */
 export const setHeaderSelector = (selector: HttpHeaderSelector) => {
   _httpHeaderSelector = selector;
 };
 
+/**
+ * @deprecated
+ */
 export type MiddleSagaCallback =
   | ((config: WatcherConfig, state: any, action: IAsyncAction) => any)
   | null;
@@ -135,6 +157,7 @@ var _middleSagaCallback: ((...args: any[]) => any) | null = null;
  * Set a saga function to be executed between pending status and success/fail status
  *
  * @param saga Saga function
+ * @deprecated Use [[configure]] instead
  */
 export const setMiddleSagaCallback = (saga: MiddleSagaCallback) => {
   _middleSagaCallback = saga;
@@ -149,6 +172,7 @@ var _failSagaCallback: ((...args: any[]) => any) | null = null;
  * Set a saga function to be executed after fail status detected
  *
  * @param saga Saga function
+ * @deprecated Use [[configure]] instead
  */
 export const setFailSagaCallback = (saga: FailSagaCallback) => {
   _failSagaCallback = saga;
@@ -180,22 +204,33 @@ export const setFailSagaCallback = (saga: FailSagaCallback) => {
  * ```
  */
 export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
+  if (!config.statuses) {
+    config.statuses = {
+      success: BasicAsyncActionTypes.SUCCESS,
+      fail: BasicAsyncActionTypes.FAIL,
+      cancel: BasicAsyncActionTypes.CANCEL,
+    };
+  }
+
   const task = yield fork(
     function* (_config: IAsyncConfig, _rootAction: IAsyncAction) {
       try {
         let state = yield select();
 
         if (_config?.statuses?.pending) {
+          const pendingAction: any = {
+            type: _config.statuses.pending,
+            key: _rootAction.key,
+          };
+
           if (_config.mapActionToPendingPayload) {
-            yield put({
-              type: _config.statuses.pending,
-              payload: _config.mapActionToPendingPayload(state, _rootAction),
-            });
-          } else {
-            yield put({
-              type: _config.statuses.pending,
-            });
+            pendingAction.payload = _config.mapActionToPendingPayload(
+              state,
+              _rootAction
+            );
           }
+
+          yield put(pendingAction);
         }
 
         const middleSagaCallback =
@@ -301,7 +336,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           );
         }
 
-        let responses = null;
+        let responses: any = null;
 
         if (_config.runInSequence) {
           responses = [];
@@ -316,10 +351,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
         // Find failed http response
         const failHttpResponse = responses.find(
-          (e: any) =>
-            e.status !== undefined &&
-            e.status !== null &&
-            e.status !== httpStatusCodes.OK
+          (e: any) => isHttpResponse(e) && e.status !== HttpStatusCodes.OK
         );
 
         // Handle throwing error exception in case there is failed http response
@@ -343,7 +375,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
 
         const datas = yield all(
           responses.map((e: any) => {
-            if (e.headers) {
+            if (isHttpResponse(e)) {
               if (isHttpJsonResponse(e)) {
                 return call([e, 'json']);
               } else if (e.text) {
@@ -357,44 +389,50 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           })
         );
 
-        const failDataIndex = datas.findIndex(
-          (e: any) =>
-            e.success !== undefined && e.success !== null && !e.success
-        );
+        const transformFailResult = getConfig().transformFailResult;
 
-        if (failDataIndex >= 0) {
-          throw {
-            message: datas[failDataIndex].message,
-            status: responses[failDataIndex].status,
-          };
+        if (transformFailResult) {
+          datas.forEach((e: any, index: number) => {
+            const failResult = transformFailResult(e);
+
+            if (failResult) {
+              throw {
+                status: responses[index].status,
+                ...failResult,
+              };
+            }
+          });
         }
 
         payload = _config.mapResultToPayload
           ? _config.mapResultToPayload(
               state,
               _rootAction,
-              datas.map((e: any) => e.data),
+              datas.map(getConfig().transformSuccessResult),
               datas
             )
           : datas.length === 1
-          ? datas[0].data
+          ? getConfig().transformSuccessResult?.(datas[0], 0, datas)
           : datas;
 
         yield put({
           type: _config?.statuses?.success,
           payload,
+          key: _rootAction.key,
         });
       } catch (error) {
         const err = parseError(error);
         yield put({
           type: _config?.statuses?.fail,
           payload: err,
+          key: _rootAction.key,
         });
       } finally {
         if (yield cancelled()) {
           if (_config.resetIfCanceled && _config?.statuses?.reset) {
             yield put({
               type: _config.statuses.reset,
+              key: _rootAction.key,
             });
           }
         }
@@ -405,9 +443,9 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
   );
 
   const action = yield take([
-    config.statuses?.cancel || '?',
-    config.statuses?.success || '',
-    config.statuses?.fail || '',
+    config.statuses?.cancel ?? BasicAsyncActionTypes.CANCEL,
+    config.statuses.success,
+    config.statuses.fail,
   ]);
 
   if (action.type === config?.statuses?.cancel && task) {

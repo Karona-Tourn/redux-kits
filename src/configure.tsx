@@ -1,5 +1,8 @@
 import { IAsyncAction, HttpPayload } from './actionKits';
-import { WatcherConfig } from './sagaWatcherKits';
+import { FailResult, WatcherConfig } from './sagaWatcherKits';
+import { enableES5 } from 'immer';
+
+enableES5();
 
 export interface IConfig {
   baseUrlSelector?:
@@ -41,6 +44,13 @@ export interface IConfig {
   transformHttpRequestOption?:
     | ((config: WatcherConfig, state: any, init?: RequestInit) => RequestInit)
     | null;
+
+  transformSuccessResult?: (result: any, index: number, results: any[]) => any;
+
+  transformFailResult?:
+    | ((result: any) => FailResult | null | undefined)
+    | null
+    | undefined;
 }
 
 var _defaultConfig: IConfig = {
@@ -50,6 +60,16 @@ var _defaultConfig: IConfig = {
   failSagaCallback: null,
   customFetch: null,
   transformHttpRequestOption: null,
+  transformSuccessResult: (result: any) => result?.data,
+  transformFailResult: (result: any) => {
+    if (typeof result?.success === 'boolean' && !result?.success) {
+      return {
+        message: result.message,
+      };
+    }
+
+    return null;
+  },
 };
 
 var _config: IConfig = {
