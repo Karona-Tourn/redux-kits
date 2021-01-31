@@ -26,6 +26,9 @@ type TAsyncSelected<T> = {
   hasMore?: boolean;
 };
 
+/**
+ * @ignore
+ */
 export function usePrevious(value: any, defaultValue: any = undefined) {
   const ref = useRef(defaultValue);
 

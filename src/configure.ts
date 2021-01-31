@@ -85,6 +85,9 @@ export function configure(config: IConfig): IConfig {
   return _config;
 }
 
+/**
+ * @ignore
+ */
 export function getConfig(): IConfig {
   return _config;
 }
