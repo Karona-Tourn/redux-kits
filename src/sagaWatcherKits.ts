@@ -19,7 +19,12 @@ import {
   BasicAsyncActionTypes,
 } from './actionKits';
 import { getConfig } from './configure';
-import { HttpStatusCodes, isHttpJsonResponse, isHttpResponse } from './utils';
+import {
+  HttpStatusCodes,
+  isHttpJsonResponse,
+  isHttpResponse,
+  parseError,
+} from './utils';
 
 export interface FailResult {
   message: string;
@@ -102,83 +107,6 @@ export interface WatcherConfig extends IAsyncConfig {
 }
 
 /**
- * @ignore
- */
-export function parseError(error: { message: string; status: number }) {
-  return {
-    message: error.message,
-    status: error.status,
-  };
-}
-
-type BaseUrlSelector =
-  | ((config: WatcherConfig, state: any, action: IAsyncAction) => string)
-  | null;
-var _baseUrlSelector: BaseUrlSelector = null;
-/**
- *
- * @param selector
- * @deprecated Use [[configure]] instead
- */
-export const setBaseUrlSelector = (selector: BaseUrlSelector) => {
-  _baseUrlSelector = selector;
-};
-
-/**
- * @deprecated
- */
-export type HttpHeaderSelector =
-  | ((
-      config: WatcherConfig,
-      state: any,
-      action: IAsyncAction,
-      http: HttpPayload
-    ) => Headers)
-  | null;
-var _httpHeaderSelector: HttpHeaderSelector = null;
-/**
- *
- * @param selector
- * @deprecated Use [[configure]] instead
- */
-export const setHeaderSelector = (selector: HttpHeaderSelector) => {
-  _httpHeaderSelector = selector;
-};
-
-/**
- * @deprecated
- */
-export type MiddleSagaCallback =
-  | ((config: WatcherConfig, state: any, action: IAsyncAction) => any)
-  | null;
-var _middleSagaCallback: ((...args: any[]) => any) | null = null;
-
-/**
- * Set a saga function to be executed between pending status and success/fail status
- *
- * @param saga Saga function
- * @deprecated Use [[configure]] instead
- */
-export const setMiddleSagaCallback = (saga: MiddleSagaCallback) => {
-  _middleSagaCallback = saga;
-};
-
-type FailSagaCallback =
-  | ((config: WatcherConfig, action: IAsyncAction) => any)
-  | null;
-var _failSagaCallback: ((...args: any[]) => any) | null = null;
-
-/**
- * Set a saga function to be executed after fail status detected
- *
- * @param saga Saga function
- * @deprecated Use [[configure]] instead
- */
-export const setFailSagaCallback = (saga: FailSagaCallback) => {
-  _failSagaCallback = saga;
-};
-
-/**
  * Function for helping running async task having status pending, success, fail and cancel
  *
  * @param config
@@ -233,8 +161,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           yield put(pendingAction);
         }
 
-        const middleSagaCallback =
-          getConfig().middleSagaCallback ?? _middleSagaCallback;
+        const middleSagaCallback = getConfig().middleSagaCallback;
 
         // Execute generator function middleware
         if (middleSagaCallback) {
@@ -253,8 +180,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         if (_rootAction && _rootAction.http) {
           state = yield select();
 
-          const baseUrlSelector =
-            getConfig().baseUrlSelector ?? _baseUrlSelector;
+          const baseUrlSelector = getConfig().baseUrlSelector;
 
           const baseUrl = baseUrlSelector
             ? baseUrlSelector(_config as WatcherConfig, state, _rootAction)
@@ -271,8 +197,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
                 query = `?${qs.stringify(params)}`;
               }
 
-              const httpHeaderSelector =
-                getConfig().httpHeaderSelector ?? _httpHeaderSelector;
+              const httpHeaderSelector = getConfig().httpHeaderSelector;
 
               const baseHeaders = httpHeaderSelector
                 ? httpHeaderSelector(
@@ -452,7 +377,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
     yield cancel(task);
   }
 
-  const failSagaCallback = getConfig().failSagaCallback ?? _failSagaCallback;
+  const failSagaCallback: any = getConfig().failSagaCallback;
 
   if (failSagaCallback) {
     if (action.type === config?.statuses?.fail) {
@@ -562,7 +487,7 @@ export function createAsyncPagingWatcher(
     ...restConfig,
     mapActionToPendingPayload: (state, action) => {
       let payload: any = {
-        clear: action.payload.cleanPrevious ?? action.payload.clear,
+        clear: action.payload.clear,
         firstOffset: action.payload.firstOffset ?? true,
       };
 

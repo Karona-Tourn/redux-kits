@@ -45,11 +45,6 @@ export interface IAsyncPagingPayload extends IAsyncPagingData {
   clear?: boolean;
 
   /**
-   * @deprecated Use [[clear]] instead
-   */
-  cleanPrevious?: boolean;
-
-  /**
    * If true, field `offset` in the reducer state will be reset to 0
    */
   firstOffset?: boolean;

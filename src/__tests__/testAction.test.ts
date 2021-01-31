@@ -76,4 +76,11 @@ describe('Test action creator maker', function () {
       clear: true,
     });
   });
+  it('Test async basic action types', function () {
+    expect(ActionTypeMaker.createAsyncActionTypes('TEST')).toEqual({
+      pending: 'TEST_PENDING',
+      success: 'TEST_SUCCESS',
+      fail: 'TEST_FAIL',
+    });
+  });
 });
