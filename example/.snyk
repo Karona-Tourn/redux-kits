@@ -48,3 +48,57 @@ patch:
         patched: '2021-01-08T16:39:18.234Z'
     - snyk > snyk-python-plugin > snyk-poetry-lockfile-parser > @snyk/cli-interface > @snyk/dep-graph > graphlib > lodash:
         patched: '2021-01-08T16:39:18.234Z'
+    - expo > expo-constants > @expo/config > @babel/core > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @babel/core > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @babel/core > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > @react-native-community/cli-platform-ios > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > @react-native-community/cli-platform-ios > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > @react-native-community/cli-platform-ios > @react-native-community/cli-tools > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > @react-native-community/cli-platform-ios > @react-native-community/cli-tools > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > @react-native-community/cli-platform-ios > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/config-plugins > @expo/configure-splash-screen > @react-native-community/cli-platform-ios > @react-native-community/cli-tools > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/preset-modules > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/preset-modules > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/preset-modules > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - react-native-unimodules > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
+    - expo > expo-linking > expo-constants > @expo/config > @expo/babel-preset-cli > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2021-01-30T14:02:30.141Z'
