@@ -2,10 +2,10 @@ import { IAsyncPagingData } from './reducerKits';
 import { IAsyncStatus } from './sagaWatcherKits';
 
 export class BasicAsyncActionTypes {
-  static PENDING: 'PENDING';
-  static SUCCESS: 'SUCCESS';
-  static FAIL: 'FAIL';
-  static CANCEL: 'CANCEL';
+  static PENDING = 'PENDING';
+  static SUCCESS = 'SUCCESS';
+  static FAIL = 'FAIL';
+  static CANCEL = 'CANCEL';
 }
 
 export type HttpPayload = {
