@@ -148,7 +148,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         if (_config?.statuses?.pending) {
           const pendingAction: any = {
             type: _config.statuses.pending,
-            key: _rootAction.key,
+            key: _rootAction?.key,
           };
 
           if (_config.mapActionToPendingPayload) {
@@ -343,21 +343,21 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
         yield put({
           type: _config?.statuses?.success,
           payload,
-          key: _rootAction.key,
+          key: _rootAction?.key,
         });
       } catch (error) {
         const err = parseError(error);
         yield put({
           type: _config?.statuses?.fail,
           payload: err,
-          key: _rootAction.key,
+          key: _rootAction?.key,
         });
       } finally {
         if (yield cancelled()) {
           if (_config.resetIfCanceled && _config?.statuses?.reset) {
             yield put({
               type: _config.statuses.reset,
-              key: _rootAction.key,
+              key: _rootAction?.key,
             });
           }
         }
