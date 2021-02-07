@@ -10,6 +10,7 @@ import {
   cancel,
   CallEffect,
   takeLeading,
+  takeEvery,
 } from 'redux-saga/effects';
 import qs from 'qs';
 import {
@@ -97,6 +98,8 @@ export interface IAsyncConfig {
    * Tell if array of promise tasks or http tasks should run in parallel or sequence
    */
   runInSequence?: boolean;
+
+  takeType?: 'leading' | 'latest' | 'every';
 }
 
 export interface WatcherConfig extends IAsyncConfig {
@@ -419,9 +422,17 @@ export function createAsyncWatcher(
     listenOnceAtTime: false,
   }
 ) {
-  const { actionPrefix, statuses, ...restConfig } = config;
+  const { actionPrefix, statuses, takeType, ...restConfig } = config;
 
-  const takeTask = config.listenOnceAtTime ? takeLeading : takeLatest;
+  const takeTask = takeType
+    ? takeType === 'latest'
+      ? takeLatest
+      : takeType === 'leading'
+      ? takeLeading
+      : takeEvery
+    : config.listenOnceAtTime
+    ? takeLeading
+    : takeLatest;
 
   return function* () {
     yield takeTask(actionPrefix, function* (action) {
