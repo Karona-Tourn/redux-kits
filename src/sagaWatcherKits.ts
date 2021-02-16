@@ -312,7 +312,7 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
             }
 
             return call(function* (p) {
-              yield p;
+              return p;
             }, e);
           })
         );
