@@ -455,11 +455,20 @@ export function createAsyncPagingReducer(
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
-          const payload = action.payload as IAsyncPagingPayload;
-          if (payload.clear) {
+          const { clear, ...rest } = action.payload as IAsyncPagingPayload;
+
+          if (clear) {
             draftState.data = [];
             draftState.offset = 0;
           }
+
+          const keys = Object.keys(rest);
+          if (keys.length > 0) {
+            keys.forEach((key) => {
+              draftState[key] = rest[key];
+            });
+          }
+
           draftState.pending = true;
           draftState.hasMore = true;
         });
