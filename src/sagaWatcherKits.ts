@@ -75,13 +75,30 @@ export interface IAsyncConfig {
         action: any,
         results: any[] | any,
         rawResults: any[]
-      ) => object)
+      ) => { data?: any } | any)
     | null;
+
+  mapFailToPayload?:
+    | ((data: {
+        state: any;
+        action: any;
+        error: any;
+        rawError: any;
+      }) => {
+        [key: string]: any;
+        error: any;
+      })
+    | null;
+  /**
+   * @deprecated Use [[mapPendingToPayload]] instead
+   */
+  mapActionToPendingPayload?: ((state: any, action: any) => object) | null;
+
   /**
    * Map dispatched action to pending payload to be stored in reducer with a matched action type ending with `_PENDING`.
    * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
    */
-  mapActionToPendingPayload?: ((state: any, action: any) => object) | null;
+  mapPendingToPayload?: ((state: any, action: any) => object) | null;
   /**
    * Tell if need to reset a reducer when dispatching a action type action type ending with `_CANCEL`
    * Reference information [[createAsyncReducer]] or [[createAsyncPagingReducer]]
@@ -154,8 +171,8 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
             key: _rootAction?.key,
           };
 
-          if (_config.mapActionToPendingPayload) {
-            pendingAction.payload = _config.mapActionToPendingPayload(
+          if (_config.mapPendingToPayload) {
+            pendingAction.payload = _config.mapPendingToPayload(
               state,
               _rootAction
             );
@@ -349,7 +366,19 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
           key: _rootAction?.key,
         });
       } catch (error) {
-        const err = parseError(error);
+        let err: any = parseError(error);
+
+        if (_config.mapFailToPayload) {
+          const state = yield select();
+
+          err = _config.mapFailToPayload({
+            state,
+            action: _rootAction,
+            error: err,
+            rawError: error,
+          });
+        }
+
         yield put({
           type: _config?.statuses?.fail,
           payload: err,
@@ -417,12 +446,20 @@ export function createAsyncWatcher(
     getPromises: null,
     statuses: null,
     mapResultToPayload: null,
+    mapPendingToPayload: null,
     mapActionToPendingPayload: null,
     resetIfCanceled: true,
     listenOnceAtTime: false,
   }
 ) {
-  const { actionPrefix, statuses, takeType, ...restConfig } = config;
+  const {
+    actionPrefix,
+    statuses,
+    takeType,
+    mapPendingToPayload,
+    mapActionToPendingPayload,
+    ...restConfig
+  } = config;
 
   const takeTask = takeType
     ? takeType === 'latest'
@@ -434,12 +471,25 @@ export function createAsyncWatcher(
     ? takeLeading
     : takeLatest;
 
+  const _mapPendingToPayload = mapPendingToPayload ?? mapActionToPendingPayload;
+
   return function* () {
     yield takeTask(actionPrefix, function* (action) {
       yield call(
         runAsync,
         {
           ...restConfig,
+          mapPendingToPayload: (state, action) => {
+            let payload: any = action.payload ?? {};
+
+            if (_mapPendingToPayload) {
+              payload = {
+                ...payload,
+                ...(_mapPendingToPayload(state, action) ?? {}),
+              };
+            }
+            return payload;
+          },
           statuses: {
             pending: ActionTypeMaker.PENDING(actionPrefix),
             success: ActionTypeMaker.SUCCESS(actionPrefix),
@@ -483,6 +533,7 @@ export function createAsyncPagingWatcher(
     getPromises: null,
     statuses: null,
     mapResultToPayload: null,
+    mapPendingToPayload: null,
     mapActionToPendingPayload: null,
     resetIfCanceled: true,
     listenOnceAtTime: false,
@@ -491,12 +542,15 @@ export function createAsyncPagingWatcher(
   const {
     mapResultToPayload,
     mapActionToPendingPayload,
+    mapPendingToPayload,
     ...restConfig
   } = config;
 
+  const _mapPendingToPayload = mapPendingToPayload ?? mapActionToPendingPayload;
+
   return createAsyncWatcher({
     ...restConfig,
-    mapActionToPendingPayload: (state, action) => {
+    mapPendingToPayload: (state, action) => {
       let payload: any = {
         clear: action.payload.clear,
         firstOffset: action.payload.firstOffset ?? true,
@@ -504,10 +558,10 @@ export function createAsyncPagingWatcher(
 
       payload.clear = payload.clear ?? false;
 
-      if (mapActionToPendingPayload) {
+      if (_mapPendingToPayload) {
         payload = {
           ...payload,
-          ...mapActionToPendingPayload(state, action),
+          ...(_mapPendingToPayload(state, action) ?? {}),
         };
       }
       return payload;

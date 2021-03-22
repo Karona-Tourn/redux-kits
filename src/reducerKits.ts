@@ -6,11 +6,14 @@ import {
   IAsyncPagingPayload,
 } from './actionKits';
 import _ from 'lodash';
+import { assignTo } from './utils';
 
 /**
  * Initial async reducerstate
  */
 export interface IAsyncState {
+  [index: string]: any;
+
   data: any;
 
   /**
@@ -41,6 +44,7 @@ export interface IAsyncPagingState {
   data: IAsyncPagingData[];
   offset: number;
   pending: boolean;
+  refreshing: boolean;
   error: any;
   hasMore: boolean;
 }
@@ -73,6 +77,7 @@ var defaultAsyncPagingState: IAsyncPagingState = {
   data: [],
   offset: 0,
   pending: false,
+  refreshing: false,
   error: null,
   hasMore: true,
 };
@@ -211,6 +216,10 @@ export function createReducerGroup(
   };
 }
 
+type AsyncReducerFunction =
+  | ((state: IAsyncState, action: IAsyncAction) => IAsyncState)
+  | null;
+
 /**
  * Create a reducer that working with work related steps of state changes like: `PENDING` => `SUCCESS` or `FAIL`.
  * This function works closely with saga function createAsyncApiWatcher
@@ -236,6 +245,7 @@ export function createReducerGroup(
  * ```
  *
  * @param actionTypePrefix Main action type
+ * @param extraReducer Reducer function that handle other custom action types
  * @param initialState Initial state in form of ```{ data: any, pending: boolean, error: any }```
  *
  * ```javascript
@@ -245,6 +255,7 @@ export function createReducerGroup(
  */
 export function createAsyncReducer(
   actionTypePrefix: string,
+  extraReducer: AsyncReducerFunction = null,
   initialState: IAsyncState = defaultAsyncState
 ) {
   const defaultState = {
@@ -261,72 +272,111 @@ export function createAsyncReducer(
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
-          const key = action.key;
-          if (key) {
-            if (!draftState.dataEntity) {
-              draftState.dataEntity = {};
-            }
-            if (draftState.dataEntity[key]) {
-              const data = draftState.dataEntity[key];
-              data.pending = true;
-            } else {
-              draftState.dataEntity[key] = {
-                ...defaultState,
-                pending: true,
-              };
-            }
-          } else {
-            draftState.pending = true;
-          }
-        });
-      case SUCCESS:
-        return produce(state, (draftState) => {
+          let _state = draftState;
           const key = action.key;
 
           if (key) {
             if (!draftState.dataEntity) {
               draftState.dataEntity = {};
             }
-            if (draftState.dataEntity[key]) {
-              const data = draftState.dataEntity[key];
-              data.data = action.payload;
-              data.error = null;
-              data.pending = false;
-            } else {
+
+            if (!draftState.dataEntity[key]) {
               draftState.dataEntity[key] = {
-                data: action.payload,
-                error: null,
-                pending: false,
+                ...defaultAsyncState,
               };
             }
-          } else {
-            draftState.data = action.payload;
-            draftState.error = null;
-            draftState.pending = false;
+
+            _state = draftState.dataEntity[key];
           }
+
+          if (
+            typeof action.payload === 'object' &&
+            !Array.isArray(action.payload)
+          ) {
+            const { clear, ...payload } = action.payload;
+
+            if (clear) {
+              _state.data = null;
+            }
+
+            assignTo(_state, payload);
+          }
+
+          _state.pending = true;
         });
-      case FAIL:
+      case SUCCESS:
         return produce(state, (draftState) => {
+          let _state = draftState;
           const key = action.key;
+
           if (key) {
             if (!draftState.dataEntity) {
               draftState.dataEntity = {};
             }
-            if (draftState.dataEntity[key]) {
-              const data = draftState.dataEntity[key];
-              data.error = action.payload;
-              data.pending = false;
-            } else {
+
+            if (!draftState.dataEntity[key]) {
               draftState.dataEntity[key] = {
-                ...defaultState,
-                error: action.payload,
-                pending: true,
+                ...defaultAsyncState,
               };
             }
-          } else {
-            draftState.error = action.payload;
-            draftState.pending = false;
+
+            _state = draftState.dataEntity[key];
           }
+
+          if (
+            typeof action.payload === 'object' &&
+            !Array.isArray(action.payload)
+          ) {
+            const { data, ...payload } = action.payload;
+
+            if (data) {
+              assignTo(_state, payload);
+
+              _state.data = data;
+            } else {
+              _state.data = payload;
+            }
+          } else {
+            _state.data = action.payload;
+          }
+
+          _state.error = null;
+          _state.pending = false;
+        });
+      case FAIL:
+        return produce(state, (draftState) => {
+          let _state = draftState;
+          const key = action.key;
+
+          if (key) {
+            if (!draftState.dataEntity) {
+              draftState.dataEntity = {};
+            }
+
+            if (!draftState.dataEntity[key]) {
+              draftState.dataEntity[key] = {
+                ...defaultAsyncState,
+              };
+            }
+
+            _state = draftState.dataEntity[key];
+          }
+
+          if (typeof action.payload === 'object') {
+            const { error, ...payload } = action.payload;
+
+            if (error) {
+              assignTo(_state, payload);
+
+              _state.error = error;
+            } else {
+              _state.error = payload;
+            }
+          } else {
+            _state.error = action.payload;
+          }
+
+          _state.pending = false;
         });
       case RESET:
         return produce(state, (draftState) => {
@@ -345,6 +395,9 @@ export function createAsyncReducer(
           }
         });
       default:
+        if (extraReducer) {
+          return extraReducer(state, action);
+        }
         return state;
     }
   };
@@ -375,7 +428,7 @@ type AsyncReducerGroup = {
  * ```
  */
 export function createAsyncReducerGroup(nameTypePairs: {
-  [key: string]: string | [string, IAsyncState];
+  [key: string]: string | [string, AsyncReducerFunction, IAsyncState];
 }): AsyncReducerGroup {
   const group: AsyncReducerGroup = {};
 
@@ -388,6 +441,10 @@ export function createAsyncReducerGroup(nameTypePairs: {
 
   return group;
 }
+
+type AsyncPagingReducerFunction =
+  | ((state: IAsyncPagingState, action: IAsyncAction) => IAsyncPagingState)
+  | null;
 
 /**
  * Create a reducer that working with work related steps of state changes like: `PENDING` => `SUCCESS` or `FAIL`.
@@ -434,6 +491,7 @@ export function createAsyncReducerGroup(nameTypePairs: {
  */
 export function createAsyncPagingReducer(
   actionTypePrefix: string,
+  extraReducer: AsyncPagingReducerFunction = null,
   initialState: IAsyncPagingState = defaultAsyncPagingState
 ) {
   const defaultState = {
@@ -455,18 +513,21 @@ export function createAsyncPagingReducer(
     switch (action.type) {
       case PENDING:
         return produce(state, (draftState) => {
-          const { clear, ...rest } = action.payload as IAsyncPagingPayload;
+          const {
+            clear,
+            firstOffset,
+            ...payload
+          } = action.payload as IAsyncPagingPayload;
 
           if (clear) {
             draftState.data = [];
             draftState.offset = 0;
           }
 
-          const keys = Object.keys(rest);
-          if (keys.length > 0) {
-            keys.forEach((key) => {
-              draftState[key] = rest[key];
-            });
+          assignTo(draftState, payload);
+
+          if (!clear && firstOffset) {
+            draftState.refreshing = true;
           }
 
           draftState.pending = true;
@@ -477,7 +538,7 @@ export function createAsyncPagingReducer(
           const {
             data,
             firstOffset,
-            ...rest
+            ...payload
           } = action.payload as IAsyncPagingPayload;
           const newData = data && Array.isArray(data) ? data : [];
           const length = newData.length;
@@ -492,14 +553,10 @@ export function createAsyncPagingReducer(
           draftState.hasMore = length > 0;
           draftState.error = null;
 
-          const keys = Object.keys(rest);
-          if (keys.length > 0) {
-            keys.forEach((key) => {
-              draftState[key] = rest[key];
-            });
-          }
+          assignTo(draftState, payload);
 
           draftState.pending = false;
+          draftState.refreshing = false;
         });
       case ADD_LAST:
         return produce(state, (draftState) => {
@@ -553,12 +610,29 @@ export function createAsyncPagingReducer(
         });
       case FAIL:
         return produce(state, (draftState) => {
-          draftState.error = action.payload;
+          if (typeof action.payload === 'object') {
+            const { error, ...payload } = action.payload;
+
+            if (error) {
+              assignTo(draftState, payload);
+
+              draftState.error = error;
+            } else {
+              draftState.error = payload;
+            }
+          } else {
+            draftState.error = action.payload;
+          }
+
           draftState.pending = false;
+          draftState.refreshing = false;
         });
       case RESET:
         return produce(defaultState, () => {});
       default:
+        if (extraReducer) {
+          return extraReducer(state, action);
+        }
         return state;
     }
   };
@@ -591,7 +665,9 @@ type AsyncPagingReducerGroup = {
  * ```
  */
 export function createAsyncPagingReducerGroup(nameTypePairs: {
-  [key: string]: string | [string, IAsyncPagingState];
+  [key: string]:
+    | string
+    | [string, AsyncPagingReducerFunction, IAsyncPagingState];
 }): AsyncPagingReducerGroup {
   const group: AsyncPagingReducerGroup = {};
 

@@ -16,6 +16,9 @@ const watchFetchUsers = createAsyncWatcher({
   getPromises: (state, action) => [
     () => getUsers({ limit: action.payload.limit }),
   ],
+  mapPendingToPayload: () => ({
+    clear: true,
+  }),
   mapResultToPayload: (state, action, results, rawResults) =>
     rawResults[0].results,
 });

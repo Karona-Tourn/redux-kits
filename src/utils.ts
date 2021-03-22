@@ -35,3 +35,9 @@ export function parseError(error: { message: string; status: number }) {
 export class HttpStatusCodes {
   static OK = 200;
 }
+
+export function assignTo(dest, source) {
+  for (let prop in source) {
+    dest[prop] = source[prop];
+  }
+}
