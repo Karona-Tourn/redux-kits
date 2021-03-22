@@ -290,6 +290,7 @@ export function createAsyncReducer(
           }
 
           if (
+            action.payload &&
             typeof action.payload === 'object' &&
             !Array.isArray(action.payload)
           ) {
@@ -324,6 +325,7 @@ export function createAsyncReducer(
           }
 
           if (
+            action.payload &&
             typeof action.payload === 'object' &&
             !Array.isArray(action.payload)
           ) {
@@ -362,7 +364,11 @@ export function createAsyncReducer(
             _state = draftState.dataEntity[key];
           }
 
-          if (typeof action.payload === 'object') {
+          if (
+            action.payload &&
+            typeof action.payload === 'object' &&
+            !Array.isArray(action.payload)
+          ) {
             const { error, ...payload } = action.payload;
 
             if (error) {
@@ -610,7 +616,11 @@ export function createAsyncPagingReducer(
         });
       case FAIL:
         return produce(state, (draftState) => {
-          if (typeof action.payload === 'object') {
+          if (
+            action.payload &&
+            typeof action.payload === 'object' &&
+            !Array.isArray(action.payload)
+          ) {
             const { error, ...payload } = action.payload;
 
             if (error) {
