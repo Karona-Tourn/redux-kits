@@ -313,7 +313,11 @@ export function* runAsync(config: IAsyncConfig, rootAction: IAsyncAction) {
             message:
               typeof error === 'string'
                 ? error
-                : error?.message ?? 'Something went wrong!',
+                : error?.message
+                ? error?.message
+                : error?.error
+                ? error?.error
+                : 'Something went wrong!',
             status: failHttpResponse.status,
           };
         }
